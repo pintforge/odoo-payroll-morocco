@@ -46,19 +46,5 @@
             </field>
         </record>
         
-        <record id="hr_bank_form_inherit" model="ir.ui.view">
-            <field name="name">res.bank.form.l10n_ma_hr_payroll.inherit</field>
-            <field name="model">res.bank</field>
-            <field name="inherit_id" ref="base.view_res_bank_form"/>
-            <field name="arch" type="xml">
-            <data>
-               <xpath expr="//field[@name='bic']" position="after">
-                 <field name="bank_virement"  domain="[('partner_id','=',company_id)]" context="{'default_company_id': company_id}"/>
-                 <field name="bank_virement_id"/>
-                 <field name="company_id"/>
-               </xpath>
-            </data>
-            </field>
-        </record>
   
 </odoo>
