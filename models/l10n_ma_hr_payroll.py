@@ -43,7 +43,7 @@ class HrContract(models.Model):
 class ResBank(models.Model):
     _inherit = 'res.bank'
 
-    bank_virement = fields.Many2one('res.partner.bank', string='Banque de virement')
+    bank_virement = fields.Many2one('res.partner.bank', string='Compte de virement')
     bank_virement_id = fields.Many2one('res.bank', string='Banque de virement', related='bank_virement.bank_id')
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True,
         states={'draft': [('readonly', False)]}, default=lambda self: self.env.user.company_id)
