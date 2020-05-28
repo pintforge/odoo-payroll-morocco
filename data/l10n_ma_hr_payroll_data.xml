@@ -348,6 +348,14 @@ result = (BC*5/100) if (coef &gt;= 25) and (coef &lt;= 60) else (BC*10/100) if (
        <field name="appears_on_payslip" eval="True"/>
      </record>
 
+     <record id="hr_payroll.hr_rule_gross" model="hr.salary.rule">
+        <field name="name">***Salaire Brut Global***</field>
+        <field name="code">GROSS</field>
+        <field name="sequence">100</field>
+	<field name="amount_select">code</field>
+        <field name="amount_python_compute">result = categories.BASIC + categories.ALW</field>
+    </record>
+
 	
  <!--HR structure -->
 
