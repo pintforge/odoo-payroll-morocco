@@ -35,6 +35,24 @@
         <field name="code">GRAT</field>
          <field name="parent_id" ref="hr_payroll.ALW"/>
     </record>
+   
+    <record id="PRINT" model="hr.salary.rule.category">
+        <field name="name">Primes et indémnités Taxables</field>
+        <field name="code">PRINT</field>
+        <field name="parent_id" ref="hr_payroll.ALW"/>
+    </record>
+    
+    <record id="PRINNT" model="hr.salary.rule.category">
+        <field name="name">Indémnités Non Taxables</field>
+        <field name="code">PRINNT</field>
+        <field name="parent_id" ref="hr_payroll.ALW"/>
+    </record>
+	
+    <record id="PRIMANC" model="hr.salary.rule.category">
+        <field name="name">Indémnités Non Taxables</field>
+        <field name="code">PRIMANC</field>
+        <field name="parent_id" ref="hr_payroll.ALW"/>
+    </record>
  
  <!-- HR SALARY RULES-->
     <record id="hr_payslip_rule_abs" model="hr.salary.rule">
@@ -179,6 +197,125 @@ result = contract.wage*(coef/12) if (contract.date_start.year == 2020) and (cont
        <field name="appears_on_payslip" eval="True"/>
        <field name="register_id" ref="hr_prime__register"/>
     </record>
+	
+    <record id="hr_payslip_rule_inv" model="hr.salary.rule">
+       <field name="name">Prime Inventaire</field>
+       <field name="code">INV</field>
+       <field name="sequence">32</field>
+       <field name="category_id" ref="PRINT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.INV and inputs.INV.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.INV and inputs.INV.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+
+    </record>
+
+    <record id="hr_payslip_rule_bilan" model="hr.salary.rule">
+       <field name="name">Prime Bilan</field>
+       <field name="code">BILAN</field>
+       <field name="sequence">33</field>
+       <field name="category_id" ref="PRINT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.BILAN and inputs.BILAN.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.BILAN and inputs.BILAN.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+
+     </record>
+
+     <record id="hr_payslip_rule_primfonc" model="hr.salary.rule">
+       <field name="name">Prime de Fonction</field>
+       <field name="code">PRIMFONC</field>
+       <field name="sequence">35</field>
+       <field name="category_id" ref="PRINT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = contract.prime_fonction > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = contract.prime_fonction</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+     </record>
+
+     <record id="hr_payslip_rule_pranc" model="hr.salary.rule">
+       <field name="name">Prime Ancienneté</field>
+       <field name="code">PRANC</field>
+       <field name="sequence">40</field>
+       <field name="category_id" ref="PRIMANC"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">coef = ((payslip.date_from.year - contract.date_start.year)*12) - contract.date_start.month + (payslip.date_from.month +1)
+result = coef > 24</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">coef = ((payslip.date_from.year - contract.date_start.year)*12) - contract.date_start.month + (payslip.date_from.month + 1)
+BC = categories.BASIC + categories.ALW 
+result = (BC*5/100) if (coef &gt;= 25) and (coef &lt;= 60) else (BC*10/100) if (coef &gt;= 61) and (coef &lt;= 144) else (BC*15/100) if (coef &gt;= 145) and (coef &lt;= 240) else (BC*20/100) if (coef &gt;= 241) and (coef &lt;= 300) else (BC*25/100)</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+     </record>
+
+     <record id="hr_payslip_rule_indtrans" model="hr.salary.rule">
+       <field name="name">Indemnité Transport</field>
+       <field name="code">INDTRANS</field>
+       <field name="sequence">50</field>
+       <field name="category_id" ref="PRINNT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = contract.indemnite_transport > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = contract.indemnite_transport</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+     </record>
+
+     <record id="hr_payslip_rule_indvt" model="hr.salary.rule">
+       <field name="name">Indemnité de Voiture</field>
+       <field name="code">INDVT</field>
+       <field name="sequence">51</field>
+       <field name="category_id" ref="PRINNT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = contract.indemnite_voiture > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = contract.indemnite_voiture</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+     </record>
+
+     <record id="hr_payslip_rule_indrepr" model="hr.salary.rule">
+       <field name="name">Indemnités de Représentation</field>
+       <field name="code">INDMREPR</field>
+       <field name="sequence">52</field>
+       <field name="category_id" ref="PRINNT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = contract.indemnite_representation > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = contract.indemnite_representation</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+     </record>
+
+     <record id="hr_payslip_rule_primpan" model="hr.salary.rule">
+       <field name="name">Prime de Panier</field>
+       <field name="code">PRIMPAN</field>
+       <field name="sequence">53</field>
+       <field name="category_id" ref="PRINNT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = contract.prime_panier > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = contract.prime_panier</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+     </record>
+
+     <record id="hr_payslip_rule_avantage_nature" model="hr.salary.rule">
+       <field name="name">Avantage en Nature</field>
+       <field name="code">AVTNA</field>
+       <field name="sequence">54</field>
+       <field name="category_id" ref="hr_payroll.ALW"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.AVTNA and inputs.AVTNA.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.AVTNA and inputs.AVTNA.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+     </record>
 	
  <!--HR structure -->
 
