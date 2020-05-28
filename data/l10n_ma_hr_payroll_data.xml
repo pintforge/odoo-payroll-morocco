@@ -173,7 +173,7 @@ result = contract.wage*(coef/12) if (contract.date_start.year == 2020) and (cont
        <field name="condition_python">result = payslip.date_from.month == 6 and inputs.GRAT6 and inputs.GRAT6.amount == 0</field>
        <field name="amount_select">code</field>
        <field name="amount_python_compute">coef = 12 - (contract.date_start.month - 1)
-result = contract.wage*(coef/12) if (contract.date_start.year == 2020) and (contract.date_start.month != 1) else contract.wage</field>
+result = contract.wage*(coef/12) if (contract.date_start.year == 2020) and (contract.date_start.month != 1) else contract.wage/2</field>
        <field name="appears_on_payslip" eval="True"/>
        <field name="register_id" ref="hr_prime__register"/>
     </record>
@@ -341,7 +341,7 @@ result = (BC*5/100) if (coef &gt;= 25) and (coef &lt;= 60) else (BC*10/100) if (
     <record id="hr_payroll_salary_structure_base" model="hr.payroll.structure">
         <field name="code">Ma-Base-</field>
         <field name="name">Structure de base paie Marocaine</field>
-        <field eval="[(6, 0, [ref('hr_payslip_rule_abs'),ref('hr_payslip_rule_absh'),ref('hr_payslip_rule_jrtv'),ref('hr_payslip_rule_tjrtv'), ref('hr_payslip_rule_regul'),ref('hr_payslip_rule_rap_base'), ref('hr_payslip_rule_grat13'), ref('hr_payslip_rule_grat6'), ref('hr_payslip_rule_grat13bis'), ref('hr_payslip_rule_grat6bis'),ref('hr_payslip_rule_gratdiv'),])]" name="rule_ids"/>
+        <field eval="[(6, 0, [ref('hr_payslip_rule_abs'),ref('hr_payslip_rule_absh'),ref('hr_payslip_rule_jrtv'),ref('hr_payslip_rule_tjrtv'), ref('hr_payslip_rule_regul'),ref('hr_payslip_rule_rap_base'), ref('hr_payslip_rule_grat13'), ref('hr_payslip_rule_grat6'), ref('hr_payslip_rule_grat13bis'), ref('hr_payslip_rule_grat6bis'),ref('hr_payslip_rule_gratdiv'),ref('hr_payslip_rule_inv'),ref('hr_payslip_rule_bilan'),ref('hr_payslip_rule_primfonc'),ref('hr_payslip_rule_pranc'),ref('hr_payslip_rule_indtrans'),ref('hr_payslip_rule_indvt'),ref('hr_payslip_rule_indrepr'),ref('hr_payslip_rule_primpan'),ref('hr_payslip_rule_avantage_nature'),])]" name="rule_ids"/>
         <field name="company_id" ref="base.main_company"/>
         <field name="note">Cette rubrique représente la structure des employés marocains.</field>
     </record>
