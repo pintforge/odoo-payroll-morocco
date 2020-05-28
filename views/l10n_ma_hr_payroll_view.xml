@@ -25,5 +25,25 @@
             </data>
             </field>
         </record>
+        
+        <record id="hr_contract_form_in_inherit" model="ir.ui.view">
+            <field name="name">hr.contract.form.in.inherit</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+            <data>
+                 <xpath expr="//group[@name='salary_and_advantages']" position="inside">
+                 <group col="2" colspan="2" name="right_column">
+                    <separator colspan="2" string="Primes et Indémnités"/>
+                        <field name="indemnite_transport"/>
+                        <field name="indemnite_representation"/>
+                        <field name="indemnite_voiture"/>
+                        <field name="prime_panier"/>
+                        <field name="prime_fonction"/>
+                 </group>
+                 </xpath>
+            </data>
+            </field>
+        </record>
   
 </odoo>
