@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  
-	<!-- Contribution Register -->
-	
-	<record id="hr_houserent_allowance_register" model="hr.contribution.register">
+        <!-- Contribution Register -->
+
+        <record id="hr_houserent_allowance_register" model="hr.contribution.register">
             <field name="name">Register for House Rent Allowance</field>
         </record>
 
