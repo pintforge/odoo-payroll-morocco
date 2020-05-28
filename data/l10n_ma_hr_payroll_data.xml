@@ -82,6 +82,30 @@
        <field name="amount_select">code</field>
        <field name="amount_python_compute">result = (contract.wage/26)*JRTV</field>
     </record>
+ 
+    <record id="hr_payslip_rule_regul" model="hr.salary.rule">
+       <field name="name">Régularisation Congé</field>
+       <field name="code">REGUL</field>
+       <field name="sequence">23</field>
+       <field name="category_id" ref="hr_payroll.BASIC"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.REGUL and inputs.REGUL.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.REGUL and inputs.REGUL.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+    </record>
+
+    <record id="hr_payslip_rule_rap_base" model="hr.salary.rule">
+       <field name="name">Rappel Salaire de Base</field>
+       <field name="code">RAPBASE</field>
+       <field name="sequence">24</field>
+       <field name="category_id" ref="hr_payroll.BASIC"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.RAPBASE and inputs.RAPBASE.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.RAPBASE and inputs.RAPBASE.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+    </record>
 	
  <!--HR structure -->
 
@@ -99,5 +123,17 @@
         <field name="code">ABSH</field>
         <field name="name">Absences par Heures</field>
         <field name="input_id" ref="hr_payslip_rule_absh"/>
+    </record>
+  
+    <record id="hr_rule_input_regul" model="hr.rule.input">
+        <field name="code">REGUL</field>
+        <field name="name">Régularisation Congés</field>
+        <field name="input_id" ref="hr_payslip_rule_regul"/>
+    </record>
+
+    <record id="hr_rule_input_regul_base" model="hr.rule.input">
+        <field name="code">RAPBASE</field>
+        <field name="name">Rappel Salaire de Base</field>
+        <field name="input_id" ref="hr_payslip_rule_rap_base"/>
     </record>
 </odoo>
