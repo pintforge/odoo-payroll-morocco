@@ -84,4 +84,12 @@
         <field name="company_id" ref="base.main_company"/>
         <field name="note">Cette rubrique représente la structure des employés marocains.</field>
     </record>
+	
+<!-- Rule Inputs -->
+	
+    <record id="hr_rule_input_absh" model="hr.rule.input">
+        <field name="code">ABSH</field>
+        <field name="name">Absences par Heures</field>
+        <field name="input_id" ref="hr_payslip_rule_absh"/>
+    </record>
 </odoo>
