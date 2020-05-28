@@ -167,15 +167,15 @@ result = contract.wage*(coef/12) if (employee.service_start_date.year == 2020) a
        <field name="register_id" ref="hr_prime__register"/>
     </record>
 
-    <record id="hr_payslip_rule_gradiv" model="hr.salary.rule">
+    <record id="hr_payslip_rule_gratdiv" model="hr.salary.rule">
        <field name="name">Gratification Divers</field>
-       <field name="code">GRADIV</field>
+       <field name="code">GRATDIV</field>
        <field name="sequence">31</field>
        <field name="category_id" ref="GRAT"/>
        <field name="condition_select">python</field>
-       <field name="condition_python">result = inputs.GRADIV and inputs.GRADIV.amount > 0</field>
+       <field name="condition_python">result = inputs.GRATDIV and inputs.GRATDIV.amount > 0</field>
        <field name="amount_select">code</field>
-       <field name="amount_python_compute">result = inputs.GRADIV and inputs.GRADIV.amount</field>
+       <field name="amount_python_compute">result = inputs.GRATDIV and inputs.GRATDIV.amount</field>
        <field name="appears_on_payslip" eval="True"/>
        <field name="register_id" ref="hr_prime__register"/>
     </record>
@@ -222,9 +222,9 @@ result = contract.wage*(coef/12) if (employee.service_start_date.year == 2020) a
         <field name="input_id" ref="hr_payslip_rule_grat6bis"/>
     </record>
 
-    <record id="hr_rule_input_gradiv" model="hr.rule.input">
-        <field name="code">GRADIV</field>
+    <record id="hr_rule_input_gratdiv" model="hr.rule.input">
+        <field name="code">GRATDIV</field>
         <field name="name">Gratification Divers</field>
-        <field name="input_id" ref="hr_payslip_rule_gradiv"/>
+        <field name="input_id" ref="hr_payslip_rule_gratdiv"/>
     </record>
 </odoo>
