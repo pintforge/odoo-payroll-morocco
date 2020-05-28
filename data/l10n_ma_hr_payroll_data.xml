@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+     
+           <!-- Contribution Register -->
+
+    <record id="hr_CNSS_register" model="hr.contribution.register">
+        <field name="name">La Caisse Nationale de Sécurité Sociale</field>
+    </record>
+
+    <record id="hr_retraite_register" model="hr.contribution.register">
+        <field name="name">Organisme de retraite complementaire CIMR</field>
+    </record>
+
+    <record id="hr_cci_register" model="hr.contribution.register">
+        <field name="name">Chambre du commerce et de l'industrie</field>
+    </record>
+
+    <record id="hr_prevoyance_register" model="hr.contribution.register">
+        <field name="name">Organisme de Mutuelle et prévoyance</field>
+    </record>
+
+	<record id="hr_prime__register" model="hr.contribution.register">
+        <field name="name">Primes et Indémnités</field>
+     </record>
+
+     <!-- HR SALARY RULE CATEGORIES-->
 <!--HR structure -->
 
      <record id="hr_payroll_salary_structure_base" model="hr.payroll.structure">
-            <field name="code">Ma-Base-</field>
-            <field name="name">Structure de base paie Marocaine</field>
-            <field eval="[(6, 0, [])]" name="rule_ids"/>
-            <field name="company_id" ref="base.main_company"/>
-            <field name="note">Cette rubrique représente la structure des employés marocains.</field>
-       </record>
+        <field name="code">Ma-Base-</field>
+        <field name="name">Structure de base paie Marocaine</field>
+        <field eval="[(6, 0, [])]" name="rule_ids"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="note">Cette rubrique représente la structure des employés marocains.</field>
+     </record>
 </odoo>
