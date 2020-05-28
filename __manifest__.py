@@ -6,17 +6,17 @@
     'category': 'Human  Resources',
     'depends': [
     "hr_payroll",
-    "report_xml",
     ],
     'description': """
-Morocco Payroll Salary Rules.
+Moroccan Payroll Salary Rules.
 ==============================
 -Configuration of hr_payroll for Morocco localization
     -All main contributions rules for Morocco payslip.
 
     """,
     'data': [
-         '',
+        'views/l10n_ma_hr_payroll_view.xml',
+        'data/l10n_ma_hr_payroll_data.xml',
      ],
-    'depends': ['hr', 'hr_contract', 'hr_employee_service', 'hr_employee_service_contract'],
+    'depends': ['hr'],
 }
