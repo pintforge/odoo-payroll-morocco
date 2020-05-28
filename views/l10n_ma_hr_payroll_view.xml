@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  
+        <record id="view_res_company_da" model="ir.ui.view">
+            <field name="name">res.company.form.l10n_ma_hr_payroll.inherit</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+            <data>
+                 <xpath expr="//field[@name='vat']" position="after">
+                      <field name="ice"/>
+                      <field name="patente"/>
+                      <field name="tp"/>
+                 </xpath>
+                 <xpath expr="//notebook" position="inside">
+                    <page name="Moroccan_payroll" string="Paramètre RH">
+                        <group>
+                          <field name="affil_cnss"/>
+                          <field name="affil_cimr"/>
+                          <field name="taux_cimr_salar"/>
+                          <field name="taux_cimr_part"/>
+                          <!--<field name="code_commune"/>-->
+                        </group>
+                    </page>
+                 </xpath>
+            </data>
+            </field>
+        </record>
   
 </odoo>
