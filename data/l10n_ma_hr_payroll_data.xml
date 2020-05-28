@@ -75,6 +75,14 @@
        <field name="appears_on_payslip" eval="False"/>
     </record>
 	
+    <record id="hr_payroll.hr_rule_basic" model="hr.salary.rule">
+       <field name="name">Salaire de base</field>
+       <field name="code">BASE</field>
+       <field name="sequence">5</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = (contract.wage/26)*JRTV</field>
+    </record>
+	
  <!--HR structure -->
 
     <record id="hr_payroll_salary_structure_base" model="hr.payroll.structure">
