@@ -19,18 +19,69 @@
         <field name="name">Organisme de Mutuelle et prévoyance</field>
     </record>
 
-	<record id="hr_prime__register" model="hr.contribution.register">
+    <record id="hr_prime__register" model="hr.contribution.register">
         <field name="name">Primes et Indémnités</field>
-     </record>
+    </record>
 
-     <!-- HR SALARY RULE CATEGORIES-->
-<!--HR structure -->
+  <!-- HR SALARY RULE CATEGORIES-->
+    <record id="NOCAT" model="hr.salary.rule.category">
+        <field name="name">NO CATEGORY</field>
+        <field name="code">NOCAT</field>
+        <field name="parent_id" eval="False"/>
+    </record>
+ 
+ <!-- HR SALARY RULES-->
+    <record id="hr_payslip_rule_abs" model="hr.salary.rule">
+       <field name="name">Absences par jour</field>
+       <field name="code">ABS</field>
+       <field name="sequence">1</field>
+       <field name="category_id" ref="hr_payroll.BASIC"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = worked_days.IMPAYE and worked_days.IMPAYE.number_of_days  > 0 </field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = worked_days.IMPAYE and worked_days.IMPAYE.number_of_days </field>
+       <field name="appears_on_payslip" eval="True"/>
+    </record>
 
-     <record id="hr_payroll_salary_structure_base" model="hr.payroll.structure">
+    <record id="hr_payslip_rule_absh" model="hr.salary.rule">
+       <field name="name">Absences par heure</field>
+       <field name="code">ABSH</field>
+       <field name="sequence">2</field>
+       <field name="category_id" ref="hr_payroll.BASIC"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.ABSH and inputs.ABSH.amount > 0 </field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.ABSH and - (inputs.ABSH.amount)</field>
+       <field name="appears_on_payslip" eval="True"/>
+    </record>
+
+    <record id="hr_payslip_rule_jrtv" model="hr.salary.rule">
+       <field name="name">NB Jours Travaillés</field>
+       <field name="code">JRTV</field>
+       <field name="sequence">3</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = 26 - categories.ABS</field>
+       <field name="appears_on_payslip" eval="True"/>
+    </record>
+
+    <record id="hr_payslip_rule_tjrtv" model="hr.salary.rule">
+       <field name="name">Total Jours Travaillés</field>
+       <field name="code">TJRTV</field>
+       <field name="sequence">4</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = payslip.sum('JRTV', '2019-01-01', '2019-12-31') + JRTV</field>
+       <field name="appears_on_payslip" eval="False"/>
+    </record>
+	
+ <!--HR structure -->
+
+    <record id="hr_payroll_salary_structure_base" model="hr.payroll.structure">
         <field name="code">Ma-Base-</field>
         <field name="name">Structure de base paie Marocaine</field>
         <field eval="[(6, 0, [])]" name="rule_ids"/>
         <field name="company_id" ref="base.main_company"/>
         <field name="note">Cette rubrique représente la structure des employés marocains.</field>
-     </record>
+    </record>
 </odoo>
