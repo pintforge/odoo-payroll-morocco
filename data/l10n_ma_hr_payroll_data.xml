@@ -24,6 +24,25 @@
     </record>
 
   <!-- HR SALARY RULE CATEGORIES-->
+	
+    <record id="hr_payroll.BASIC" model="hr.salary.rule.category">
+        <field name="name">Salaire de base</field>
+        <field name="code">BASIC</field>
+        <field name="parent_id" eval="False"/>
+    </record>
+	
+    <record id="hr_payroll.ALW" model="hr.salary.rule.category">
+        <field name="name">Allocations Globales</field>
+        <field name="code">ALW</field>
+        <field name="parent_id" eval="False"/>
+    </record>
+	
+    <record id="hr_payroll.GROSS" model="hr.salary.rule.category">
+        <field name="name">Salaire Brut Global</field>
+        <field name="code">GROSS</field>
+        <field name="parent_id" eval="False"/>
+    </record>
+	
     <record id="NOCAT" model="hr.salary.rule.category">
         <field name="name">NO CATEGORY</field>
         <field name="code">NOCAT</field>
