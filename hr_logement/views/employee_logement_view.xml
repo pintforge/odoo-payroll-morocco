@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hr_employee_logement_form" model="ir.ui.view">
+        <field name="name">hr.employee.Logement_form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='hr_settings']" position="after">
+                <page name="Logement" string="Interêt Logement">
+                    <!--<group>
+                        <group>
+                            <field name="insurance_percentage">%</field>
+                        </group>
+                        <group>
+                            <field name="deduced_amount_per_year"/>
+                            <field name="deduced_amount_per_month"/>
+                        </group>
+                    </group>-->
+                    <field name="logement" context="{'default_employee_id':id}"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+        <record id="employee_logement__details_form" model="ir.ui.view">
+            <field name="name">Employee Logement</field>
+            <field name="model">hr.logement</field>
+            <field name="arch" type="xml">
+                <form string="Employee Logement">
+                    <header>
+                     <!--<field name="state" widget="statusbar" statusbar_visible="active,expired"/>-->
+                    </header>
+                    <sheet>
+                        <!--<header>-->
+                            <!--<field name="state" class="oe_no_button" placeholder="State" style="width: 37%%" options='{"no_open": True}'/>-->
+                        <!--</header>-->
+                        <group>
+                            <group>
+                                <!--<field name="employee_id"/>-->
+                                <!--<field name="policy_coverage"/>-->
+                                <label for="date_from" string="Mois de déduction"/>
+			<div>
+				<field name="date_from" class="oe_inline" on_change="1" modifiers="{'required': true}"/>
+				  -
+				<field name="date_to" class="oe_inline" on_change="1" modifiers="{'required': true}"/>
+			</div>
+                            </group>
+                            <group>
+                                <!--<field name="logement_id"/>-->
+                                <!--<field name="sum_insured"/>-->
+                                <field name="amount"/>
+                                <field name="company_id"/>
+                            </group>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="employee_logement_details_tree" model="ir.ui.view">
+            <field name="name">Employee Logement</field>
+            <field name="model">hr.logement</field>
+            <field name="arch" type="xml">
+                <tree string="Employee Logement">
+                    <!--<field name="employee_id"/>-->
+                    <!--<field name="logement_id"/>-->
+                    <!--<field name="policy_coverage"/>
+                    <field name="sum_insured"/>-->
+                    <field name="date_from" />
+				            <field name="date_to"/>
+                    <field name="amount"/>
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+<!--        <record id="action_employee_logement_details" model="ir.actions.act_window">-->
+<!--             <field name="name">Employee Logement</field>-->
+<!--             <field name="view_type">form</field>-->
+<!--             <field name="res_model">hr.logement</field>-->
+<!--             <field name="view_mode">tree,form</field>-->
+<!--             <field name="help" type="html">-->
+<!--                 <p class="oe_view_nocontent_create">-->
+<!--                     You have'nt created any policy yet.-->
+<!--                 </p>-->
+<!--             </field>-->
+<!--         </record>-->
+
+<!--        <menuitem-->
+<!--                id="hr_insurance_main_menu"-->
+<!--                parent ="hr.menu_hr_root"-->
+<!--                name="HR Insurance"/>-->
+
+        <!--<menuitem
+                id="hr_employee_logement_menu"
+                name="Logement"
+                parent="hr_employee_updation.menu_hr_management"
+                action="action_employee_logement_details"/>-->
+    </data>
+</odoo>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--Commission Tree view-->
+    <record id="hr_commission_tree_view" model="ir.ui.view">
+        <field name="name">hr.commission.tree</field>
+        <field name="model">hr.commission</field>
+        <field name="arch" type="xml">
+            <tree string="Commission Commerciale">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--commission Form view-->
+    <record id="hr_commission_form_view" model="ir.ui.view">
+        <field name="name">hr.commission.form</field>
+        <field name="model">hr.commission</field>
+        <field name="arch" type="xml">
+            <form string="Commission Commerciale">
+                <header>
+
+                </header>
+
+                <sheet>
+                    <!--<div class="oe_button_box" name="button_box"></div>-->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group col="6">
+                        <field name="employee_id"/>
+                        <field name="department"/>
+                        <field name="date"/>
+                        <field name="commission_ca"/>
+                        <field name="commission_vd"/>
+                    </group>
+                    <group>
+                       <field name="currency_id" groups="base.group_multi_currency"/>
+                       <field name="company_id"  groups="base.group_multi_currency"/>
+                    </group>
+                </sheet>
+                <!--<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>-->
+            </form>
+        </field>
+    </record>
+
+    <!--pret search view-->
+    <record id="view_commission_request_search_form" model="ir.ui.view">
+        <field name="name">hr.commission.search.form</field>
+        <field name="model">hr.commission</field>
+        <field name="arch" type="xml">
+           <search string="Commission Commerciale">
+              <field name="employee_id" string="Employé"/>
+              <filter string="Employé" name="employee_id" context="{'group_by':'employee_id'}"/>
+            </search>
+        </field>
+    </record>
+
+
+    <!--pret menu-->
+
+
+
+    <!--<menuitem name="prets And Salary Advance"
+        id="menu_hr_prets_and_advances" web_icon="ohrms_pret,static/description/pret_web.png"
+        sequence="20"/>-->
+
+    <record id="action_hr_commission_request" model="ir.actions.act_window">
+        <field name="name">Créer une nouvelle commission commerciale</field>
+        <field name="res_model">hr.commission</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context"></field>
+        <field name="search_view_id" ref="view_commission_request_search_form"/>
+         <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Cliquer pour créer une nouvelle Commission Commerciale
+            </p><p>
+                Utiliser ce menu pour créer une nouvelle Commission Commerciale
+            </p>
+        </field>
+    </record>
+
+    <!--<menuitem name="Prêt WAFASALAF"
+        id="menu_base_hr_pret_request"
+        parent = "ohrms_loan.menu_hr_loans_and_advances"
+        sequence="1"/>-->
+
+    <menuitem name="Commission Commerciale"
+        parent="ohrms_loan.menu_hr_loans_and_advances"
+        id="menu_hr_commission_request"
+        action="action_hr_commission_request"/>
+
+
+    <!--Sequence -->
+    <record id="ir_seq_hr_commission" model="ir.sequence">
+			<field name="name">Commission Commerciale</field>
+			<field name="code">hr.commission.seq</field>
+			<field name="prefix">COM </field>
+			<field name="padding">4</field>
+			<field name="number_increment">1</field>
+			<field name="number_next_actual">1</field>
+			<field name="implementation">standard</field>
+      <field name="company_id" eval="False"/>
+		</record>
+
+    <!-- Shortcuts -->
+    <!--<record id="act_hr_employee_commission_request" model="ir.actions.act_window">
+        <field name="name">Commission commerciale</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hr.commission</field>
+        <field name="src_model">hr.employee</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context"></field>
+        <field name="view_id" eval="hr_commission_tree_view"/>
+    </record>-->
+
+
+    <!-- HR employee inherit prets -->
+    <!--<record id="view_employee_form_commission_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.commission.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="%(act_hr_employee_commission_request)d"
+                    type="action"
+                    class="oe_stat_button"
+                    icon="fa-calendar"
+                    groups="hr.group_hr_manager,hr.group_hr_user">
+                    <field name="commission_count" widget="statinfo" string="Commission Commerciale"/>
+                </button>
+            </xpath>
+        </field>
+    </record>-->
+</odoo>
