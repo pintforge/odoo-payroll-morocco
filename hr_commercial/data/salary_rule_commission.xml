@@ -3,11 +3,11 @@
 	<!--Adding a salary rule for loan-->
 	<data noupdate="0">
 
-		   <record id="hr_rule_comca" model="hr.salary.rule">
+	<record id="hr_rule_comca" model="hr.salary.rule">
             <field name="code">COMCA</field>
             <field name="name">Commission sur CA</field>
-            <field name="category_id" ref="l10n_ma_hr_payroll.COM"/>
-						<field name="condition_select">python</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+	    <field name="condition_select">python</field>
             <field name="condition_python">result = inputs.COMCA and inputs.COMCA.amount > 0</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = inputs.COMCA and (inputs.COMCA.amount)</field>
@@ -38,11 +38,13 @@
             <field name="name">Commision Vente Directe</field>
             <field name="input_id" ref="hr_rule_comvd"/>
         </record>
-				<record id="hr_payroll.structure_base" model="hr.payroll.structure">
+	
+	<record id="hr_payroll.structure_base" model="hr.payroll.structure">
             <field eval="[(4, ref('hr_rule_comca'))]"
                    name="rule_ids"/>
         </record>
-				<record id="hr_payroll.structure_base" model="hr.payroll.structure">
+	
+	<record id="hr_payroll.structure_base" model="hr.payroll.structure">
             <field eval="[(4, ref('hr_rule_comvd'))]"
                    name="rule_ids"/>
         </record>
