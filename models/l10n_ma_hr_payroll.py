@@ -39,11 +39,4 @@ class HrContract(models.Model):
     help='Indémnité de Représentation')
     indemnite_voiture = fields.Float(string='Indémnité de Voiture', digits=dp.get_precision('payroll'),
     help='Indémnité de Voiture')
-    
- class ResBank(models.Model):
-    _inherit = 'res.bank'
 
-    bank_virement = fields.Many2one('res.partner.bank', string='Banque de réception')
-    bank_virement_id = fields.Many2one('res.bank', string='Banque de réception', related='bank_virement.bank_id')
-    company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True,
-        states={'draft': [('readonly', False)]}, default=lambda self: self.env.user.company_id)
