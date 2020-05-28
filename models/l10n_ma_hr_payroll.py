@@ -22,3 +22,20 @@ class ResCompany(models.Model):
     count_permanent = fields.Char(string="Nombre d'employés Permanents",)
     count_occas = fields.Char(string="Nombre d'employés Occasionnelles",)
     count_stag = fields.Char(string="Nombre de stagiaires",)
+
+class HrContract(models.Model):
+    """
+    Employee contract allows to add different values in fields.
+    Fields are used in salary rule computation.
+    """
+    _inherit = 'hr.contract'
+
+    indemnite_transport = fields.Float(string='Indémnité de Transport', digits=dp.get_precision('payroll'), help='Indémnité de Transport')
+    prime_panier = fields.Float(string='Prime de Panier', digits=dp.get_precision('payroll'),
+    help='Prime de Panier')
+    prime_fonction = fields.Float(string='Prime de Fonction', digits=dp.get_precision('payroll'),
+    help='Prime de Fonction')
+    indemnite_representation = fields.Float(string='Indémnité de Représentation', digits=dp.get_precision('payroll'),
+    help='Indémnité de Représentation')
+    indemnite_voiture = fields.Float(string='Indémnité de Voiture', digits=dp.get_precision('payroll'),
+    help='Indémnité de Voiture')
