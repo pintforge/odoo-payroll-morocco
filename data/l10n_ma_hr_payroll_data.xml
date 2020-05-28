@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <!-- Contribution Register -->
-
-   <record id="hr_CNSS_register" model="hr.contribution.register">
-       <field name="name">La Caisse Nationale de Sécurité Sociale</field>
-   </record>
-
-   <record id="hr_retraite_register" model="hr.contribution.register">
-       <field name="name">Organisme de retraite complementaire CIMR</field>
-   </record>
-
-   <record id="hr_cci_register" model="hr.contribution.register">
-       <field name="name">Chambre du commerce et de l'industrie</field>
-   </record>
-
-   <record id="hr_prevoyance_register" model="hr.contribution.register">
-       <field name="name">Organisme de Mutuelle et prévoyance</field>
-   </record>
-
-	 <record id="hr_prime__register" model="hr.contribution.register">
-       <field name="name">Primes et Indémnités</field>
-   </record>
+  
+	<!-- Contribution Register -->
+	
+	<record id="hr_CNSS_register" model="hr.contribution.register">
+		<field name="name">La Caisse Nationale de Sécurité Sociale</field>
+	</record>
+	
+	<record id="hr_retraite_register" model="hr.contribution.register">
+		<field name="name">Organisme de retraite complementaire CIMR</field>
+	</record>
+	
+	<record id="hr_cci_register" model="hr.contribution.register">
+		<field name="name">Chambre du commerce et de l'industrie</field>
+	</record>
+	
+	<record id="hr_prevoyance_register" model="hr.contribution.register">
+		<field name="name">Organisme de Mutuelle et prévoyance</field>
+	</record>
+	
+	<record id="hr_prime__register" model="hr.contribution.register">
+		<field name="name">Primes et Indémnités</field>
+	</record>
   
  <!-- HR SALARY RULE CATEGORIES-->
   
