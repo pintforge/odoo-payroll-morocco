@@ -3,8 +3,8 @@
   
 	<!-- Contribution Register -->
 	
-	<record id="hr_CNSS_register" model="hr.contribution.register">
-		<field name="name">La Caisse Nationale de Sécurité Sociale</field>
-	</record>
+	<record id="hr_houserent_allowance_register" model="hr.contribution.register">
+            <field name="name">Register for House Rent Allowance</field>
+        </record>
 
 </odoo>
