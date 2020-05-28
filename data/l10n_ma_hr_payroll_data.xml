@@ -33,7 +33,7 @@
     <record id="GRAT" model="hr.salary.rule.category">
         <field name="name">Gratifications</field>
         <field name="code">GRAT</field>
-        <field name="parent_id" eval="hr_payroll.ALW"/>
+         <field name="parent_id" ref="hr_payroll.ALW"/>
     </record>
  
  <!-- HR SALARY RULES-->
