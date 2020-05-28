@@ -107,12 +107,79 @@
        <field name="appears_on_payslip" eval="True"/>
     </record>
 	
+    <record id="hr_payslip_rule_grat13" model="hr.salary.rule">
+       <field name="name">Gratification 13ème mois</field>
+       <field name="code">GRAT13</field>
+       <field name="sequence">30</field>
+       <field name="category_id" ref="GRAT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = payslip.date_from.month == 12 and inputs.GRAT13 and inputs.GRAT13.amount == 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">coef = 12 - (employee.service_start_date.month - 1)
+result = contract.wage*(coef/12) if (employee.service_start_date.year == 2020) and (employee.service_start_date.month != 1) else contract.wage</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+    </record>
+
+    <record id="hr_payslip_rule_grat6" model="hr.salary.rule">
+       <field name="name">Gratification Juin</field>
+       <field name="code">GRAT6</field>
+       <field name="sequence">30</field>
+       <field name="category_id" ref="GRAT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = payslip.date_from.month == 6 and inputs.GRAT6 and inputs.GRAT6.amount == 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">coef = 12 - (employee.service_start_date.month - 1)
+result = contract.wage*(coef/12) if (employee.service_start_date.year == 2020) and (employee.service_start_date.month != 1) else contract.wage</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+    </record>
+
+    <record id="hr_payslip_rule_grat13bis" model="hr.salary.rule">
+       <field name="name">Gratification 13ème mois</field>
+       <field name="code">GRAT13BIS</field>
+       <field name="sequence">30</field>
+       <field name="category_id" ref="GRAT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.GRAT13 and inputs.GRAT13.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.GRAT13 and inputs.GRAT13.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+    </record>
+
+    <record id="hr_payslip_rule_grat6bis" model="hr.salary.rule">
+       <field name="name">Gratification Juin</field>
+       <field name="code">GRAT6BIS</field>
+       <field name="sequence">30</field>
+       <field name="category_id" ref="GRAT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.GRAT6 and inputs.GRAT6.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.GRAT6 and inputs.GRAT6.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+    </record>
+
+    <record id="hr_payslip_rule_gradiv" model="hr.salary.rule">
+       <field name="name">Gratification Divers</field>
+       <field name="code">GRADIV</field>
+       <field name="sequence">31</field>
+       <field name="category_id" ref="BASIC"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.GRADIV and inputs.GRADIV.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.GRADIV and inputs.GRADIV.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+    </record>
+	
  <!--HR structure -->
 
     <record id="hr_payroll_salary_structure_base" model="hr.payroll.structure">
         <field name="code">Ma-Base-</field>
         <field name="name">Structure de base paie Marocaine</field>
-        <field eval="[(6, 0, [])]" name="rule_ids"/>
+        <field eval="[(6, 0, [ref('hr_payslip_rule_abs'),ref('hr_payslip_rule_absh'),ref('hr_payslip_rule_jrtv'),ref('hr_payslip_rule_tjrtv'), ref('hr_payslip_rule_regul'),ref('hr_payslip_rule_rap_base'), ref('hr_payslip_rule_grat13'), ref('hr_payslip_rule_grat6'), ref('hr_payslip_rule_grat13bis'), ref('hr_payslip_rule_grat6bis'),ref('hr_payslip_rule_gratdiv'),])]" name="rule_ids"/>
         <field name="company_id" ref="base.main_company"/>
         <field name="note">Cette rubrique représente la structure des employés marocains.</field>
     </record>
@@ -135,5 +202,23 @@
         <field name="code">RAPBASE</field>
         <field name="name">Rappel Salaire de Base</field>
         <field name="input_id" ref="hr_payslip_rule_rap_base"/>
+    </record>
+	
+    <record id="hr_rule_input_grat13" model="hr.rule.input">
+        <field name="code">GRAT13</field>
+        <field name="name">Gratification 13 mois</field>
+        <field name="input_id" ref="hr_payslip_rule_grat13bis"/>
+    </record>
+
+    <record id="hr_rule_input_grat6" model="hr.rule.input">
+        <field name="code">GRAT6</field>
+        <field name="name">Gratification Juin</field>
+        <field name="input_id" ref="hr_payslip_rule_grat6bis"/>
+    </record>
+
+    <record id="hr_rule_input_gradiv" model="hr.rule.input">
+        <field name="code">GRADIV</field>
+        <field name="name">Gratification Divers</field>
+        <field name="input_id" ref="hr_payslip_rule_gradiv"/>
     </record>
 </odoo>
