@@ -80,7 +80,7 @@
     </record>
 	
     <record id="PRIMANC" model="hr.salary.rule.category">
-        <field name="name">Indémnités Non Taxables</field>
+        <field name="name">Prime d'\ancienneté</field>
         <field name="code">PRIMANC</field>
         <field name="parent_id" ref="hr_payroll.ALW"/>
     </record>
