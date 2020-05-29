@@ -355,6 +355,77 @@ result = (BC*5/100) if (coef &gt;= 25) and (coef &lt;= 60) else (BC*10/100) if (
 	<field name="amount_select">code</field>
         <field name="amount_python_compute">result = categories.BASIC + categories.ALW</field>
     </record>
+	
+	<record id="hr_payslip_rule_sbi" model="hr.salary.rule">
+       <field name="name">Salaire Brut Imposable</field>
+       <field name="code">SBI</field>
+       <field name="sequence">110</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = GROSS - categories.INDMNT</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_plcnss" model="hr.salary.rule">
+       <field name="name">Plafond CNSS</field>
+       <field name="code">PLCNSS</field>
+       <field name="sequence">200</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = min(SBI, 6000)</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_cnsse" model="hr.salary.rule">
+       <field name="name">PS Cotisation C.N.S.S</field>
+       <field name="code">CNSSE</field>
+       <field name="sequence">200</field>
+       <field name="category_id" ref="hr_payroll.DED"/>
+       <field name="amount_select">percentage</field>
+       <field name="amount_percentage_base">min(SBI, 6000)</field>
+       <field name="quantity">1</field>
+       <field name="amount_percentage">4.48</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_CNSS_register"/>
+     </record>
+
+     <record id="hr_payslip_rule_cimre" model="hr.salary.rule">
+       <field name="name">PS Retraite 6%</field>
+       <field name="code">CIMRE</field>
+       <field name="sequence">220</field>
+       <field name="category_id" ref="hr_payroll.DED"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = employee.matricule_cimr</field>
+       <field name="amount_select">percentage</field>
+       <field name="amount_percentage_base">SBI</field>
+       <field name="quantity">1</field>
+       <field name="amount_percentage">6</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_retraite_register"/>
+     </record>
+
+     <record id="hr_payslip_rule_assmal" model="hr.salary.rule">
+       <field name="name">PS Assurance Maladie</field>
+       <field name="code">ASSMAL</field>
+       <field name="sequence">240</field>
+       <field name="category_id" ref="hr_payroll.DED"/>
+       <field name="amount_select">percentage</field>
+       <field name="amount_percentage_base">SBI - categories.AVT</field>
+       <field name="quantity">1</field>
+       <field name="amount_percentage">4.23</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prevoyance_register"/>
+     </record>
+
+     <record id="hr_payslip_rule_totded" model="hr.salary.rule">
+       <field name="name">Total Déductions</field>
+       <field name="code">TOTDED</field>
+       <field name="sequence">290</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = categories.DED</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
 
 	
  <!--HR structure -->
