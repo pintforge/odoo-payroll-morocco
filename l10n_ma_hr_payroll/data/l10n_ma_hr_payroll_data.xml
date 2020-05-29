@@ -449,6 +449,36 @@ result = FRPRO if (FRPRO &lt;=2500) else min((((2500*coef)-FP)+2500), FRPRO) if 
        <field name="appears_on_payslip" eval="False"/>
      </record>
 
+     <record id="hr_payslip_rule_sni" model="hr.salary.rule">
+       <field name="name">Salaire Net Imposable</field>
+       <field name="code">SNI</field>
+       <field name="sequence">500</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = SBI - categories.DED - TFRPRO - categories.LOG</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_baseir" model="hr.salary.rule">
+       <field name="name">Base IR</field>
+       <field name="code">BASEIR</field>
+       <field name="sequence">510</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = payslip.sum('SNI', '2019-01-01', '2019-12-31') + SNI</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_trimp" model="hr.salary.rule">
+       <field name="name">Tranche d'impôt</field>
+       <field name="code">TRIMP</field>
+       <field name="sequence">520</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = BASEIR*(312/TJRTV)</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
 	
  <!--HR structure -->
 
