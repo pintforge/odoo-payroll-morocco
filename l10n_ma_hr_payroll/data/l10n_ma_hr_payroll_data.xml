@@ -398,8 +398,8 @@ result = (BC*5/100) if (coef &gt;= 25) and (coef &lt;= 60) else (BC*10/100) if (
        <field name="condition_python">result = employee.matricule_cimr</field>
        <field name="amount_select">percentage</field>
        <field name="amount_percentage_base">SBI</field>
-       <field name="quantity">payslip.company_id.taux_cimr_salar%</field>
-       <field name="amount_percentage">100</field>
+       <field name="quantity">payslip.company_id.taux_cimr_salar</field>
+       <field name="amount_percentage">1</field>
        <field name="appears_on_payslip" eval="True"/>
        <field name="register_id" ref="hr_retraite_register"/>
      </record>
