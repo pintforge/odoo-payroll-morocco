@@ -353,7 +353,7 @@ result = (BC*5/100) if (coef &gt;= 25) and (coef &lt;= 60) else (BC*10/100) if (
         <field name="code">GROSS</field>
         <field name="sequence">100</field>
 	<field name="amount_select">code</field>
-        <field name="amount_python_compute">result = categories.BASIC + categories.ALW</field>
+        <field name="amount_python_compute">result = categories.BASE + categories.ALW</field>
     </record>
 	
 	<record id="hr_payslip_rule_sbi" model="hr.salary.rule">
@@ -424,6 +424,28 @@ result = (BC*5/100) if (coef &gt;= 25) and (coef &lt;= 60) else (BC*10/100) if (
        <field name="category_id" ref="NOCAT"/>
        <field name="amount_select">code</field>
        <field name="amount_python_compute">result = categories.DED</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+	
+     <record id="hr_payslip_rule_frpro" model="hr.salary.rule">
+       <field name="name">Frais Professionnels courant</field>
+       <field name="code">FRPRO</field>
+       <field name="sequence">300</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = (SBI - categories.AVT)*0.2</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_tfrpro" model="hr.salary.rule">
+       <field name="name">Frais Professionnels</field>
+       <field name="code">TFRPRO</field>
+       <field name="sequence">310</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">coef =  payslip.date_from.month - 1
+FP = payslip.sum('TFRPRO', '2019-01-01', '2019-12-31')
+result = FRPRO if (FRPRO &lt;=2500) else min((((2500*coef)-FP)+2500), FRPRO) if (2500*coef) &gt; FP else 2500</field>
        <field name="appears_on_payslip" eval="False"/>
      </record>
 
