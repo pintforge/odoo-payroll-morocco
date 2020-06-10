@@ -478,6 +478,95 @@ result = FRPRO if (FRPRO &lt;=2500) else min((((2500*coef)-FP)+2500), FRPRO) if 
        <field name="amount_python_compute">result = BASEIR*(312/TJRTV)</field>
        <field name="appears_on_payslip" eval="False"/>
      </record>
+	
+     <record id="hr_payslip_rule_sad" model="hr.salary.rule">
+       <field name="name">Somme à Déduire</field>
+       <field name="code">SAD</field>
+       <field name="sequence">530</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = (24400*(TJRTV/312)) if (TRIMP &gt; 180000) else (17200*(TJRTV/312)) if ((TRIMP &gt;= 80001) and (TRIMP &lt;= 180000)) else (14000*(TJRTV/312)) if ((TRIMP &gt;= 60001) and (TRIMP &lt;= 80000)) else (8000*(TJRTV/312)) if ((TRIMP &gt;= 50001) and (TRIMP &lt;= 60000)) else (3000*(TJRTV/312)) if ((TRIMP &gt;= 30001) and (TRIMP &lt;= 50000)) else 0</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_irant" model="hr.salary.rule">
+       <field name="name">IR Antérieur</field>
+       <field name="code">IRANT</field>
+       <field name="sequence">830</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = max(payslip.sum('IR', '2019-01-01', '2019-12-31'), 0)</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_cfam" model="hr.salary.rule">
+       <field name="name">Charge Familiales</field>
+       <field name="code">CFAM</field>
+       <field name="sequence">880</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result= employee.charge_sociale > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = min((employee.charge_sociale*30),2160)</field>
+       <field name="appears_on_payslip" eval="False"/>
+      </record>
+
+      <record id="hr_payslip_rule_tcfam" model="hr.salary.rule">
+        <field name="name">Total Charge Familiales</field>
+        <field name="code">TCFAM</field>
+        <field name="sequence">890</field>
+        <field name="category_id" ref="DEDIMP"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result= employee.charge_sociale > 0</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = payslip.sum('CFAM', '2019-01-01', '2019-12-31') + CFAM</field>
+        <field name="appears_on_payslip" eval="False"/>
+       </record>
+
+
+     <record id="hr_payslip_rule_irbrut" model="hr.salary.rule">
+       <field name="name">IR BRUT</field>
+       <field name="code">IRBRUT</field>
+       <field name="sequence">900</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = ((BASEIR*0.38)-SAD)-IRANT if (TRIMP &gt; 180000) else ((BASEIR*0.34)-SAD)-IRANT if ((TRIMP &gt;= 80001) and (TRIMP &lt;= 180000)) else ((BASEIR*0.3)-SAD)-IRANT if ((TRIMP &gt;= 60001) and (TRIMP &lt;= 80000)) else ((BASEIR*0.2)-SAD)-IRANT if ((TRIMP &gt;= 50001) and (TRIMP &lt;= 60000)) else ((BASEIR*0.1)-SAD)-IRANT if ((TRIMP &gt;= 30001) and (TRIMP &lt;= 50000)) else 0</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_ir" model="hr.salary.rule">
+       <field name="name">IR NET</field>
+       <field name="code">IR</field>
+       <field name="sequence">950</field>
+       <field name="category_id" ref="IR"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result= IRBRUT != 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = 0 if categories.DEDIMP &gt; 0 and IRBRUT &gt; 0 and (IRBRUT &lt; categories.DEDIMP) else (IRBRUT - categories.DEDIMP)</field>
+       <field name="appears_on_payslip" eval="True"/>
+     </record>
+	
+    <record id="hr_payslip_rule_tppa" model="hr.salary.rule">
+       <field name="name">Trop Perçue Paie Anterieur</field>
+       <field name="code">TPPA</field>
+       <field name="sequence">970</field>
+       <field name="category_id" ref="RETENUES"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.TPPA and inputs.TPPA.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.TPPA and inputs.TPPA.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+     </record>
+
+     <record id="hr_payslip_rule_net" model="hr.salary.rule">
+       <field name="name">Net à Payer</field>
+       <field name="code">NET</field>
+       <field name="sequence">1000</field>
+       <field name="category_id" ref="hr_payroll.NET"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = GROSS - categories.DED - categories.RETENUES - categories.IR</field>
+       <field name="appears_on_payslip" eval="True"/>
+     </record>
 
 	
  <!--HR structure -->
@@ -485,7 +574,7 @@ result = FRPRO if (FRPRO &lt;=2500) else min((((2500*coef)-FP)+2500), FRPRO) if 
     <record id="hr_payroll_salary_structure_base" model="hr.payroll.structure">
         <field name="code">Ma-Base-</field>
         <field name="name">Structure de base paie Marocaine</field>
-        <field eval="[(6, 0, [ref('hr_payslip_rule_abs'),ref('hr_payslip_rule_absh'),ref('hr_payslip_rule_jrtv'),ref('hr_payslip_rule_tjrtv'), ref('hr_payslip_rule_regul'),ref('hr_payslip_rule_rap_base'), ref('hr_payslip_rule_grat13'), ref('hr_payslip_rule_grat6'), ref('hr_payslip_rule_grat13bis'), ref('hr_payslip_rule_grat6bis'),ref('hr_payslip_rule_gratdiv'),ref('hr_payslip_rule_inv'),ref('hr_payslip_rule_bilan'),ref('hr_payslip_rule_primfonc'),ref('hr_payslip_rule_pranc'),ref('hr_payslip_rule_indtrans'),ref('hr_payslip_rule_indvt'),ref('hr_payslip_rule_indrepr'),ref('hr_payslip_rule_primpan'),ref('hr_payslip_rule_avantage_nature'),ref('hr_payslip_rule_sbi'),ref('hr_payslip_rule_plcnss'),ref('hr_payslip_rule_cnsse'),ref('hr_payslip_rule_cimre'),ref('hr_payslip_rule_assmal'),ref('hr_payslip_rule_totded'),ref('hr_payslip_rule_frpro'),ref('hr_payslip_rule_tfrpro'),ref('hr_payslip_rule_sni'),ref('hr_payslip_rule_baseir'),ref('hr_payslip_rule_trimp'),])]" name="rule_ids"/>
+        <field eval="[(6, 0, [ref('hr_payslip_rule_abs'),ref('hr_payslip_rule_absh'),ref('hr_payslip_rule_jrtv'),ref('hr_payslip_rule_tjrtv'), ref('hr_payslip_rule_regul'),ref('hr_payslip_rule_rap_base'), ref('hr_payslip_rule_grat13'), ref('hr_payslip_rule_grat6'), ref('hr_payslip_rule_grat13bis'), ref('hr_payslip_rule_grat6bis'),ref('hr_payslip_rule_gratdiv'),ref('hr_payslip_rule_inv'),ref('hr_payslip_rule_bilan'),ref('hr_payslip_rule_primfonc'),ref('hr_payslip_rule_pranc'),ref('hr_payslip_rule_indtrans'),ref('hr_payslip_rule_indvt'),ref('hr_payslip_rule_indrepr'),ref('hr_payslip_rule_primpan'),ref('hr_payslip_rule_avantage_nature'),ref('hr_payslip_rule_sbi'),ref('hr_payslip_rule_plcnss'),ref('hr_payslip_rule_cnsse'),ref('hr_payslip_rule_cimre'),ref('hr_payslip_rule_assmal'),ref('hr_payslip_rule_totded'),ref('hr_payslip_rule_frpro'),ref('hr_payslip_rule_tfrpro'),ref('hr_payslip_rule_sni'),ref('hr_payslip_rule_baseir'),ref('hr_payslip_rule_trimp'),ref('hr_payslip_rule_sad'),ref('hr_payslip_rule_irant'),ref('hr_payslip_rule_cfam'),ref('hr_payslip_rule_tcfam'),ref('hr_payslip_rule_irbrut'),ref('hr_payslip_rule_ir'),ref('hr_payslip_rule_tppa'),ref('hr_payslip_rule_net'),])]" name="rule_ids"/>
         <field name="company_id" ref="base.main_company"/>
         <field name="note">Cette rubrique représente la structure des employés marocains.</field>
     </record>
