@@ -88,6 +88,12 @@
     <record id="DEDIMP" model="hr.salary.rule.category">
         <field name="name">Déduction d'\impôt</field>
         <field name="code">DEDIMP</field>
+        <field name="parent_id" eval="False"/>
+    </record>
+	
+    <record id="IR" model="hr.salary.rule.category">
+        <field name="name">Impôt sur le Revenu</field>
+        <field name="code">IR</field>
         <field name="parent_id" ref="hr_payroll.DED"/>
     </record>
  
