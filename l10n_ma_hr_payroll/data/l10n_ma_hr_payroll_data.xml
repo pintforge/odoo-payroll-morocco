@@ -50,7 +50,7 @@
      </record>
 
      <record id="hr_payroll.DED" model="hr.salary.rule.category">
-        <field name="name">Deduction</field>
+        <field name="name">Déduction</field>
         <field name="code">DED</field>
         <field name="parent_id" eval="False"/>
      </record>
@@ -83,6 +83,12 @@
         <field name="name">Prime d'\ancienneté</field>
         <field name="code">PRIMANC</field>
         <field name="parent_id" ref="hr_payroll.ALW"/>
+    </record>
+	
+    <record id="DEDIMP" model="hr.salary.rule.category">
+        <field name="name">Déduction d'\impôt</field>
+        <field name="code">DEDIMP</field>
+        <field name="parent_id" ref="hr_payroll.DED"/>
     </record>
  
  <!-- HR SALARY RULES-->
