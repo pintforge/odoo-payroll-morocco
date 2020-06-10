@@ -81,7 +81,7 @@
                 <field name="charge_sociale"/>
               </xpath>
               <xpath expr="//field[@name='bank_account_id']" position="after">
-                <field name="bank_agence"/>
+                <!--<field name="bank_agence"/>-->
                 <field name="bank_company_id"/>
               </xpath>
             </data>
