@@ -47,3 +47,19 @@ class ResBank(models.Model):
     bank_virement_id = fields.Many2one('res.bank', string='Banque de virement', related='bank_virement.bank_id')
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True,
         states={'draft': [('readonly', False)]}, default=lambda self: self.env.user.company_id)
+
+ class hr_employee(models.Model):
+    _inherit = 'hr.employee'
+
+    cin = fields.Char(string="Numéro CIN", required=False)
+    #perso_email = fields.Char(string="Adresse Email Personnelle", required=False)
+    matricule_cnss = fields.Char(string="Numéro CNSS", required=False)
+    matricule_cimr = fields.Char(string="Numéro CIMR", required=False)
+    cat_cimr = fields.Char(string="Catégorie CIMR", default='00', required=False)
+    date_cimr = fields.Date(string="Date d'adhésion CIMR", required=False)
+    matricule_mut = fields.Char(string="Numéro MUTUELLE", required=False)
+    num_chezemployeur = fields.Integer(string="Matricule")
+    bank_agence = fields.Char(string="Agence Bancaire", required=False)
+    bank_company_id = fields.Many2one('res.bank', string='Banque de Virement', readonly=False,
+        help='Sélectionner la banque par laquelle le salaire sera versé')
+    charge_sociale = fields.Integer(string="Personnes à Charge", required=False, help='Nombre de Personnes à Charge Sociale pour déduction IR')
