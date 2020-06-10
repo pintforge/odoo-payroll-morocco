@@ -61,5 +61,32 @@
             </field>
         </record>
         
+        <record id="hr_employee_form_l10n_ma_payroll" model="ir.ui.view">
+          <field name="name">hr.employee.form.l10n.ma_payroll</field>
+          <field name="model">hr.employee</field>
+          <field name="priority">30</field>
+          <field name="inherit_id" ref="hr.view_employee_form"/>
+          <field name="arch" type="xml">
+            <data>
+              <xpath expr="//group[@name='identification_id']" position="after">
+                <group>
+                  <field name="cin"/>
+                  <field name="matricule_cnss"/>
+                  <field name="matricule_cimr" class="oe_inline"/><field name="cat_cimr" class="oe_inline"/><field name="date_cimr" class="oe_inline"/>
+                  <field name="matricule_mut" />
+                  <field name="num_chezemployeur"/>
+                </group>
+              </xpath>
+              <xpath expr="//field[@name='children']" position="after">
+                <field name="charge_sociale"/>
+              </xpath>
+              <xpath expr="//field[@name='bank_account_id']" position="after">
+                <field name="bank_agence"/>
+                <field name="bank_company_id"/>
+              </xpath>
+            </data>
+          </field>
+        </record>
+        
   
 </odoo>
