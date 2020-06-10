@@ -562,7 +562,7 @@ result = FRPRO if (FRPRO &lt;=2500) else min((((2500*coef)-FP)+2500), FRPRO) if 
        <field name="name">Trop Perçue Paie Anterieur</field>
        <field name="code">TPPA</field>
        <field name="sequence">970</field>
-       <field name="category_id" ref="RETENUES"/>
+       <field name="category_id" ref="hr_payroll.DED"/>
        <field name="condition_select">python</field>
        <field name="condition_python">result = inputs.TPPA and inputs.TPPA.amount > 0</field>
        <field name="amount_select">code</field>
