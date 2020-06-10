@@ -47,8 +47,8 @@ class ResBank(models.Model):
     bank_virement_id = fields.Many2one('res.bank', string='Banque de virement', related='bank_virement.bank_id')
     company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True,
         states={'draft': [('readonly', False)]}, default=lambda self: self.env.user.company_id)
-
- class HRemployee(models.Model):
+    
+class HRemployee(models.Model):
     _inherit = 'hr.employee'
 
     cin = fields.Char(string="Numéro CIN", required=False)
