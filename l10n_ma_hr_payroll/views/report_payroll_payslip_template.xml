@@ -48,7 +48,7 @@
                         <td colspan = "4"><strong>N°Retraite</strong></td>
                       </tr>
                       <tr>
-                        <td><span t-field="o.employee_id.service_start_date"/></td>
+                        <td><span t-field="o.employee_id.joining_date"/></td>
                         <td><span t-field="o.employee_id.country_id"/></td>
                         <td><span t-field="o.employee_id.marital"/></td>
                         <td><span t-field="o.employee_id.charge_sociale"/></td>
