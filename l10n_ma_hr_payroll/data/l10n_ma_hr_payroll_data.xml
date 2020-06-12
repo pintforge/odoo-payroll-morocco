@@ -615,7 +615,8 @@ result = FRPRO if (FRPRO &lt;=2500) else min((((2500*coef)-FP)+2500), FRPRO) if 
        <field name="category_id" ref="hr_payroll.NET"/>
        <field name="amount_select">code</field>
        <field name="amount_python_compute">result = inputs.ABN and inputs.ABN.amount </field>
-       <field name="appears_on_payslip" eval="True"/> 
+       <field name="appears_on_payslip" eval="True"/>
+    </record>
 		    
 		    <!-- Rule Inputs -->
 	
