@@ -2,7 +2,6 @@
 <odoo>
      
            <!-- Contribution Register -->
-
     <record id="hr_CNSS_register" model="hr.contribution.register">
         <field name="name">La Caisse Nationale de Sécurité Sociale</field>
     </record>
