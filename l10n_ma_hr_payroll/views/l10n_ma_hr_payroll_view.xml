@@ -68,7 +68,7 @@
           <field name="inherit_id" ref="hr.view_employee_form"/>
           <field name="arch" type="xml">
             <data>
-              <xpath expr="//group[@name='identification_id']" position="after">
+              <xpath expr="//group[@name='active_group']" position="after">
                 <group>
                   <field name="cin"/>
                   <field name="matricule_cnss"/>
