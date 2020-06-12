@@ -21,4 +21,78 @@
         <field name="name">Primes et Indémnités</field>
     </record>
            
+           <!-- HR SALARY RULE CATEGORIES-->
+	
+     <record id="hr_payroll.NET" model="hr.salary.rule.category">
+        <field name="name">Salaire Net</field>
+        <field name="code">NET</field>
+        <field name="parent_id" eval="False"/>
+     </record>
+
+     <record id="hr_payroll.GROSS" model="hr.salary.rule.category">
+        <field name="name">Salaire Brut</field>
+        <field name="code">BRUT</field>
+        <field name="parent_id" eval="False"/>
+     </record>
+
+     <record id="hr_payroll.BASIC" model="hr.salary.rule.category">
+        <field name="name">Salaire de base</field>
+        <field name="code">BASE</field>
+        <field name="parent_id" eval="False"/>
+     </record>
+
+     <record id="hr_payroll.ALW" model="hr.salary.rule.category">
+        <field name="name">Indemnite</field>
+        <field name="code">ALW</field>
+        <field name="parent_id" eval="False"/>
+     </record>
+
+     <record id="hr_payroll.DED" model="hr.salary.rule.category">
+        <field name="name">Déduction</field>
+        <field name="code">DED</field>
+        <field name="parent_id" eval="False"/>
+     </record>
+	
+    <record id="NOCAT" model="hr.salary.rule.category">
+        <field name="name">NO CATEGORY</field>
+        <field name="code">NOCAT</field>
+        <field name="parent_id" eval="False"/>
+    </record>
+ 
+    <record id="GRAT" model="hr.salary.rule.category">
+        <field name="name">Gratifications</field>
+        <field name="code">GRAT</field>
+         <field name="parent_id" ref="hr_payroll.ALW"/>
+    </record>
+   
+    <record id="PRINT" model="hr.salary.rule.category">
+        <field name="name">Primes et indémnités Taxables</field>
+        <field name="code">PRINT</field>
+        <field name="parent_id" ref="hr_payroll.ALW"/>
+    </record>
+    
+    <record id="PRINNT" model="hr.salary.rule.category">
+        <field name="name">Indémnités Non Taxables</field>
+        <field name="code">PRINNT</field>
+        <field name="parent_id" ref="hr_payroll.ALW"/>
+    </record>
+	
+    <record id="PRIMANC" model="hr.salary.rule.category">
+        <field name="name">Prime d'\ancienneté</field>
+        <field name="code">PRIMANC</field>
+        <field name="parent_id" ref="hr_payroll.ALW"/>
+    </record>
+	
+    <record id="DEDIMP" model="hr.salary.rule.category">
+        <field name="name">Déduction d'\impôt</field>
+        <field name="code">DEDIMP</field>
+        <field name="parent_id" eval="False"/>
+    </record>
+	
+    <record id="IR" model="hr.salary.rule.category">
+        <field name="name">Impôt sur le Revenu</field>
+        <field name="code">IR</field>
+        <field name="parent_id" ref="hr_payroll.DED"/>
+    </record>
+           
 </odoo>
