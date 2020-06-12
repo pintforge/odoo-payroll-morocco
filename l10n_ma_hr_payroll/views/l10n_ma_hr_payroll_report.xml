@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+        <report
+            id="payslip_details_report"
+            model="hr.payslip"
+            string="Détail du Bulletin de paie"
+            report_type="qweb-pdf"
+            name="l10n_ma_hr_payroll.report_payslipdetails"
+            file="l10n_ma_hr_payroll.report_payslipdetails" />
 
+        <report
+                id="payslip_report"
+                model="hr.payslip"
+                string="Bultin de paie"
+                report_type="qweb-pdf"
+                name="l10n_ma_hr_payroll.report_payslip"
+                file="l10n_ma_hr_payroll.report_payslip"/>
 
 </odoo>
