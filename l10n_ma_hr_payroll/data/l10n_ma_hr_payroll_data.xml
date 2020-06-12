@@ -615,7 +615,44 @@ result = FRPRO if (FRPRO &lt;=2500) else min((((2500*coef)-FP)+2500), FRPRO) if 
        <field name="category_id" ref="hr_payroll.NET"/>
        <field name="amount_select">code</field>
        <field name="amount_python_compute">result = inputs.ABN and inputs.ABN.amount </field>
-       <field name="appears_on_payslip" eval="True"/>
-     </record>
-           
+       <field name="appears_on_payslip" eval="True"/> 
+		    
+		    <!-- Rule Inputs -->
+	
+    <record id="hr_rule_input_absh" model="hr.rule.input">
+        <field name="code">ABSH</field>
+        <field name="name">Absences par Heures</field>
+        <field name="input_id" ref="hr_payslip_rule_absh"/>
+    </record>
+  
+    <record id="hr_rule_input_regul" model="hr.rule.input">
+        <field name="code">REGUL</field>
+        <field name="name">Régularisation Congés</field>
+        <field name="input_id" ref="hr_payslip_rule_regul"/>
+    </record>
+
+    <record id="hr_rule_input_regul_base" model="hr.rule.input">
+        <field name="code">RAPBASE</field>
+        <field name="name">Rappel Salaire de Base</field>
+        <field name="input_id" ref="hr_payslip_rule_rap_base"/>
+    </record>
+	
+    <record id="hr_rule_input_grat13" model="hr.rule.input">
+        <field name="code">GRAT13</field>
+        <field name="name">Gratification 13 mois</field>
+        <field name="input_id" ref="hr_payslip_rule_grat13bis"/>
+    </record>
+
+    <record id="hr_rule_input_grat6" model="hr.rule.input">
+        <field name="code">GRAT6</field>
+        <field name="name">Gratification Juin</field>
+        <field name="input_id" ref="hr_payslip_rule_grat6bis"/>
+    </record>
+
+    <record id="hr_rule_input_gratdiv" model="hr.rule.input">
+        <field name="code">GRATDIV</field>
+        <field name="name">Gratification Divers</field>
+        <field name="input_id" ref="hr_payslip_rule_gratdiv"/>
+    </record>
+	     
 </odoo>
