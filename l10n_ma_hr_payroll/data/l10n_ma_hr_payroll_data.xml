@@ -94,5 +94,528 @@
         <field name="code">IR</field>
         <field name="parent_id" ref="hr_payroll.DED"/>
     </record>
+	
+<!-- HR SALARY RULES-->
+    <record id="hr_payslip_rule_abs" model="hr.salary.rule">
+       <field name="name">Absences par jour</field>
+       <field name="code">ABS</field>
+       <field name="sequence">1</field>
+       <field name="category_id" ref="hr_payroll.BASIC"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = worked_days.IMPAYE and worked_days.IMPAYE.number_of_days  > 0 </field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = worked_days.IMPAYE and worked_days.IMPAYE.number_of_days </field>
+       <field name="appears_on_payslip" eval="True"/>
+    </record>
+
+    <record id="hr_payslip_rule_absh" model="hr.salary.rule">
+       <field name="name">Absences par heure</field>
+       <field name="code">ABSH</field>
+       <field name="sequence">2</field>
+       <field name="category_id" ref="hr_payroll.BASIC"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.ABSH and inputs.ABSH.amount > 0 </field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.ABSH and - (inputs.ABSH.amount)</field>
+       <field name="appears_on_payslip" eval="True"/>
+    </record>
+
+    <record id="hr_payslip_rule_jrtv" model="hr.salary.rule">
+       <field name="name">NB Jours Travaillés</field>
+       <field name="code">JRTV</field>
+       <field name="sequence">3</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = 26 - categories.ABS</field>
+       <field name="appears_on_payslip" eval="True"/>
+    </record>
+
+    <record id="hr_payslip_rule_tjrtv" model="hr.salary.rule">
+       <field name="name">Total Jours Travaillés</field>
+       <field name="code">TJRTV</field>
+       <field name="sequence">4</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = payslip.sum('JRTV', '2019-01-01', '2019-12-31') + JRTV</field>
+       <field name="appears_on_payslip" eval="False"/>
+    </record>
+	
+    <record id="hr_payroll.hr_rule_basic" model="hr.salary.rule">
+       <field name="name">Salaire de base</field>
+       <field name="code">BASE</field>
+       <field name="sequence">5</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = (contract.wage/26)*JRTV</field>
+    </record>
+ 
+    <record id="hr_payslip_rule_regul" model="hr.salary.rule">
+       <field name="name">Régularisation Congé</field>
+       <field name="code">REGUL</field>
+       <field name="sequence">23</field>
+       <field name="category_id" ref="hr_payroll.BASIC"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.REGUL and inputs.REGUL.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.REGUL and inputs.REGUL.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+    </record>
+
+    <record id="hr_payslip_rule_rap_base" model="hr.salary.rule">
+       <field name="name">Rappel Salaire de Base</field>
+       <field name="code">RAPBASE</field>
+       <field name="sequence">24</field>
+       <field name="category_id" ref="hr_payroll.BASIC"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.RAPBASE and inputs.RAPBASE.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.RAPBASE and inputs.RAPBASE.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+    </record>
+	
+    <record id="hr_payslip_rule_grat13" model="hr.salary.rule">
+       <field name="name">Gratification 13ème mois</field>
+       <field name="code">GRAT13</field>
+       <field name="sequence">30</field>
+       <field name="category_id" ref="GRAT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = payslip.date_from.month == 12 and inputs.GRAT13 and inputs.GRAT13.amount == 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">coef = 12 - (contract.date_start.month - 1)
+result = contract.wage*(coef/12) if (contract.date_start.year == payslip.date_from.year) and (contract.date_start.month != 1) else contract.wage</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+    </record>
+
+    <record id="hr_payslip_rule_grat6" model="hr.salary.rule">
+       <field name="name">Gratification Juin</field>
+       <field name="code">GRAT6</field>
+       <field name="sequence">30</field>
+       <field name="category_id" ref="GRAT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = payslip.date_from.month == 6 and inputs.GRAT6 and inputs.GRAT6.amount == 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">coef = 6 - (contract.date_start.month - 1)
+result = contract.wage*(coef/12) if (contract.date_start.year == payslip.date_from.year) and (contract.date_start.month != 1) else contract.wage/2</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+    </record>
+
+    <record id="hr_payslip_rule_grat13bis" model="hr.salary.rule">
+       <field name="name">Gratification 13ème mois</field>
+       <field name="code">GRAT13BIS</field>
+       <field name="sequence">30</field>
+       <field name="category_id" ref="GRAT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.GRAT13 and inputs.GRAT13.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.GRAT13 and inputs.GRAT13.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+    </record>
+
+    <record id="hr_payslip_rule_grat6bis" model="hr.salary.rule">
+       <field name="name">Gratification Juin</field>
+       <field name="code">GRAT6BIS</field>
+       <field name="sequence">30</field>
+       <field name="category_id" ref="GRAT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.GRAT6 and inputs.GRAT6.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.GRAT6 and inputs.GRAT6.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+    </record>
+
+    <record id="hr_payslip_rule_gratdiv" model="hr.salary.rule">
+       <field name="name">Gratification Divers</field>
+       <field name="code">GRATDIV</field>
+       <field name="sequence">31</field>
+       <field name="category_id" ref="GRAT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.GRATDIV and inputs.GRATDIV.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.GRATDIV and inputs.GRATDIV.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+    </record>
+	
+    <record id="hr_payslip_rule_inv" model="hr.salary.rule">
+       <field name="name">Prime Inventaire</field>
+       <field name="code">INV</field>
+       <field name="sequence">32</field>
+       <field name="category_id" ref="PRINT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.INV and inputs.INV.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.INV and inputs.INV.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+
+    </record>
+
+    <record id="hr_payslip_rule_bilan" model="hr.salary.rule">
+       <field name="name">Prime Bilan</field>
+       <field name="code">BILAN</field>
+       <field name="sequence">33</field>
+       <field name="category_id" ref="PRINT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.BILAN and inputs.BILAN.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.BILAN and inputs.BILAN.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+
+     </record>
+
+     <record id="hr_payslip_rule_primfonc" model="hr.salary.rule">
+       <field name="name">Prime de Fonction</field>
+       <field name="code">PRIMFONC</field>
+       <field name="sequence">35</field>
+       <field name="category_id" ref="PRINT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = contract.prime_fonction > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = contract.prime_fonction</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+     </record>
+
+     <record id="hr_payslip_rule_pranc" model="hr.salary.rule">
+       <field name="name">Prime Ancienneté</field>
+       <field name="code">PRANC</field>
+       <field name="sequence">40</field>
+       <field name="category_id" ref="PRIMANC"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">coef = ((payslip.date_from.year - contract.date_start.year)*12) - contract.date_start.month + (payslip.date_from.month +1)
+result = coef > 24</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">coef = ((payslip.date_from.year - contract.date_start.year)*12) - contract.date_start.month + (payslip.date_from.month + 1)
+BC = categories.BASIC + categories.ALW 
+result = (BC*5/100) if (coef &gt;= 25) and (coef &lt;= 60) else (BC*10/100) if (coef &gt;= 61) and (coef &lt;= 144) else (BC*15/100) if (coef &gt;= 145) and (coef &lt;= 240) else (BC*20/100) if (coef &gt;= 241) and (coef &lt;= 300) else (BC*25/100)</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+     </record>
+
+     <record id="hr_payslip_rule_indtrans" model="hr.salary.rule">
+       <field name="name">Indemnité Transport</field>
+       <field name="code">INDTRANS</field>
+       <field name="sequence">50</field>
+       <field name="category_id" ref="PRINNT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = contract.indemnite_transport > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = contract.indemnite_transport</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+     </record>
+
+     <record id="hr_payslip_rule_indvt" model="hr.salary.rule">
+       <field name="name">Indemnité de Voiture</field>
+       <field name="code">INDVT</field>
+       <field name="sequence">51</field>
+       <field name="category_id" ref="PRINNT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = contract.indemnite_voiture > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = contract.indemnite_voiture</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+     </record>
+
+     <record id="hr_payslip_rule_indrepr" model="hr.salary.rule">
+       <field name="name">Indemnités de Représentation</field>
+       <field name="code">INDMREPR</field>
+       <field name="sequence">52</field>
+       <field name="category_id" ref="PRINNT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = contract.indemnite_representation > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = contract.indemnite_representation</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+     </record>
+
+     <record id="hr_payslip_rule_primpan" model="hr.salary.rule">
+       <field name="name">Prime de Panier</field>
+       <field name="code">PRIMPAN</field>
+       <field name="sequence">53</field>
+       <field name="category_id" ref="PRINNT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = contract.prime_panier > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = contract.prime_panier</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prime__register"/>
+     </record>
+
+     <record id="hr_payslip_rule_avantage_nature" model="hr.salary.rule">
+       <field name="name">Avantage en Nature</field>
+       <field name="code">AVTNA</field>
+       <field name="sequence">54</field>
+       <field name="category_id" ref="hr_payroll.ALW"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.AVTNA and inputs.AVTNA.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.AVTNA and inputs.AVTNA.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+     </record>
+
+     <record id="hr_payroll.hr_rule_taxable" model="hr.salary.rule">
+        <field name="name">***Salaire Brut Global***</field>
+        <field name="code">GROSS</field>
+        <field name="sequence">100</field>
+	<field name="amount_select">code</field>
+        <field name="amount_python_compute">result = categories.BASE + categories.ALW</field>
+    </record>
+	
+	<record id="hr_payslip_rule_sbi" model="hr.salary.rule">
+       <field name="name">Salaire Brut Imposable</field>
+       <field name="code">SBI</field>
+       <field name="sequence">110</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = GROSS - categories.INDMNT</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_plcnss" model="hr.salary.rule">
+       <field name="name">Plafond CNSS</field>
+       <field name="code">PLCNSS</field>
+       <field name="sequence">200</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = min(SBI, 6000)</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_cnsse" model="hr.salary.rule">
+       <field name="name">PS Cotisation C.N.S.S</field>
+       <field name="code">CNSSE</field>
+       <field name="sequence">200</field>
+       <field name="category_id" ref="hr_payroll.DED"/>
+       <field name="amount_select">percentage</field>
+       <field name="amount_percentage_base">min(SBI, 6000)</field>
+       <field name="quantity">1</field>
+       <field name="amount_percentage">4.48</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_CNSS_register"/>
+     </record>
+
+     <record id="hr_payslip_rule_cimre" model="hr.salary.rule">
+       <field name="name">PS Retraite 6%</field>
+       <field name="code">CIMRE</field>
+       <field name="sequence">220</field>
+       <field name="category_id" ref="hr_payroll.DED"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = employee.matricule_cimr</field>
+       <field name="amount_select">percentage</field>
+       <field name="amount_percentage_base">SBI</field>
+       <field name="quantity">payslip.company_id.taux_cimr_salar</field>
+       <field name="amount_percentage">1</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_retraite_register"/>
+     </record>
+
+     <record id="hr_payslip_rule_assmal" model="hr.salary.rule">
+       <field name="name">PS Assurance Maladie</field>
+       <field name="code">ASSMAL</field>
+       <field name="sequence">240</field>
+       <field name="category_id" ref="hr_payroll.DED"/>
+       <field name="amount_select">percentage</field>
+       <field name="amount_percentage_base">SBI - categories.AVT</field>
+       <field name="quantity">1</field>
+       <field name="amount_percentage">4.23</field>
+       <field name="appears_on_payslip" eval="True"/>
+       <field name="register_id" ref="hr_prevoyance_register"/>
+     </record>
+
+     <record id="hr_payslip_rule_totded" model="hr.salary.rule">
+       <field name="name">Total Déductions</field>
+       <field name="code">TOTDED</field>
+       <field name="sequence">290</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = categories.DED</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+	
+     <record id="hr_payslip_rule_frpro" model="hr.salary.rule">
+       <field name="name">Frais Professionnels courant</field>
+       <field name="code">FRPRO</field>
+       <field name="sequence">300</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = (SBI - categories.AVT)*0.2</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_tfrpro" model="hr.salary.rule">
+       <field name="name">Frais Professionnels</field>
+       <field name="code">TFRPRO</field>
+       <field name="sequence">310</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">coef =  payslip.date_from.month - 1
+FP = payslip.sum('TFRPRO', '2019-01-01', '2019-12-31')
+result = FRPRO if (FRPRO &lt;=2500) else min((((2500*coef)-FP)+2500), FRPRO) if (2500*coef) &gt; FP else 2500</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_sni" model="hr.salary.rule">
+       <field name="name">Salaire Net Imposable</field>
+       <field name="code">SNI</field>
+       <field name="sequence">500</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = SBI - categories.DED - TFRPRO - categories.LOG</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_baseir" model="hr.salary.rule">
+       <field name="name">Base IR</field>
+       <field name="code">BASEIR</field>
+       <field name="sequence">510</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = payslip.sum('SNI', '2019-01-01', '2019-12-31') + SNI</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_trimp" model="hr.salary.rule">
+       <field name="name">Tranche d'impôt</field>
+       <field name="code">TRIMP</field>
+       <field name="sequence">520</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = BASEIR*(312/TJRTV)</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+	
+     <record id="hr_payslip_rule_sad" model="hr.salary.rule">
+       <field name="name">Somme à Déduire</field>
+       <field name="code">SAD</field>
+       <field name="sequence">530</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = (24400*(TJRTV/312)) if (TRIMP &gt; 180000) else (17200*(TJRTV/312)) if ((TRIMP &gt;= 80001) and (TRIMP &lt;= 180000)) else (14000*(TJRTV/312)) if ((TRIMP &gt;= 60001) and (TRIMP &lt;= 80000)) else (8000*(TJRTV/312)) if ((TRIMP &gt;= 50001) and (TRIMP &lt;= 60000)) else (3000*(TJRTV/312)) if ((TRIMP &gt;= 30001) and (TRIMP &lt;= 50000)) else 0</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_irant" model="hr.salary.rule">
+       <field name="name">IR Antérieur</field>
+       <field name="code">IRANT</field>
+       <field name="sequence">830</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = max(payslip.sum('IR', '2019-01-01', '2019-12-31'), 0)</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_cfam" model="hr.salary.rule">
+       <field name="name">Charge Familiales</field>
+       <field name="code">CFAM</field>
+       <field name="sequence">880</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result= employee.charge_sociale > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = min((employee.charge_sociale*30),2160)</field>
+       <field name="appears_on_payslip" eval="False"/>
+      </record>
+
+      <record id="hr_payslip_rule_tcfam" model="hr.salary.rule">
+        <field name="name">Total Charge Familiales</field>
+        <field name="code">TCFAM</field>
+        <field name="sequence">890</field>
+        <field name="category_id" ref="DEDIMP"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result= employee.charge_sociale > 0</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = payslip.sum('CFAM', '2019-01-01', '2019-12-31') + CFAM</field>
+        <field name="appears_on_payslip" eval="False"/>
+       </record>
+
+
+     <record id="hr_payslip_rule_irbrut" model="hr.salary.rule">
+       <field name="name">IR BRUT</field>
+       <field name="code">IRBRUT</field>
+       <field name="sequence">900</field>
+       <field name="category_id" ref="NOCAT"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = ((BASEIR*0.38)-SAD)-IRANT if (TRIMP &gt; 180000) else ((BASEIR*0.34)-SAD)-IRANT if ((TRIMP &gt;= 80001) and (TRIMP &lt;= 180000)) else ((BASEIR*0.3)-SAD)-IRANT if ((TRIMP &gt;= 60001) and (TRIMP &lt;= 80000)) else ((BASEIR*0.2)-SAD)-IRANT if ((TRIMP &gt;= 50001) and (TRIMP &lt;= 60000)) else ((BASEIR*0.1)-SAD)-IRANT if ((TRIMP &gt;= 30001) and (TRIMP &lt;= 50000)) else 0</field>
+       <field name="appears_on_payslip" eval="False"/>
+     </record>
+
+     <record id="hr_payslip_rule_ir" model="hr.salary.rule">
+       <field name="name">IR NET</field>
+       <field name="code">IR</field>
+       <field name="sequence">950</field>
+       <field name="category_id" ref="IR"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result= IRBRUT != 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = 0 if categories.DEDIMP &gt; 0 and IRBRUT &gt; 0 and (IRBRUT &lt; categories.DEDIMP) else (IRBRUT - categories.DEDIMP)</field>
+       <field name="appears_on_payslip" eval="True"/>
+     </record>
+	
+    <record id="hr_payslip_rule_tppa" model="hr.salary.rule">
+       <field name="name">Trop Perçue Paie Anterieur</field>
+       <field name="code">TPPA</field>
+       <field name="sequence">970</field>
+       <field name="category_id" ref="hr_payroll.DED"/>
+       <field name="condition_select">python</field>
+       <field name="condition_python">result = inputs.TPPA and inputs.TPPA.amount > 0</field>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.TPPA and inputs.TPPA.amount</field>
+       <field name="appears_on_payslip" eval="True"/>
+     </record>
+
+     <record id="hr_payslip_rule_net" model="hr.salary.rule">
+       <field name="name">Net à Payer</field>
+       <field name="code">NET</field>
+       <field name="sequence">1000</field>
+       <field name="category_id" ref="hr_payroll.NET"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = GROSS - categories.DED - categories.RETENUES - categories.IR</field>
+       <field name="appears_on_payslip" eval="True"/>
+     </record>
+     
+     <record id="hr_payslip_rule_netar" model="hr.salary.rule">
+       <field name="name">Net à Payer Arrondi</field>
+       <field name="code">NET</field>
+       <field name="sequence">1000</field>
+       <field name="category_id" ref="hr_payroll.NET"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = round(GROSS - categories.DED - categories.RETENUES - categories.IR)</field>
+       <field name="appears_on_payslip" eval="True"/>
+     </record>
+
+     <record id="hr_payslip_rule_ac" model="hr.salary.rule">
+       <field name="name">Arrondi Courant</field>
+       <field name="code">AC</field>
+       <field name="sequence">1001</field>
+       <field name="category_id" ref="hr_payroll.BASIC"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = round(GROSS - categories.DED - categories.RETENUES - categories.IR) - (GROSS - categories.DED - categories.RETENUES - categories.IR)</field>
+       <field name="appears_on_payslip" eval="True"/>
+     </record>
+
+     <record id="hr_payslip_rule_ap" model="hr.salary.rule">
+       <field name="name">Arrondi Precédent</field>
+       <field name="code">AP</field>
+       <field name="sequence">1003</field>
+       <field name="category_id" ref="hr_payroll.DED"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = payslip.sum('AC', '2019-01-01', '2019-12-31')+AC</field>
+       <field name="appears_on_payslip" eval="True"/>
+     </record>
+
+     <record id="hr_payslip_rule_abn" model="hr.salary.rule">
+       <field name="name">Avance Bulletin Négatif</field>
+       <field name="code">ABN</field>
+       <field name="sequence">1010</field>
+       <field name="category_id" ref="hr_payroll.NET"/>
+       <field name="amount_select">code</field>
+       <field name="amount_python_compute">result = inputs.ABN and inputs.ABN.amount </field>
+       <field name="appears_on_payslip" eval="True"/>
+     </record>
            
 </odoo>
