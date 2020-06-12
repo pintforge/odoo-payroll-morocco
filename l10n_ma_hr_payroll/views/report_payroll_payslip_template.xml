@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_payslip">
+  <t t-call="web.html_container">
+      <t t-foreach="docs" t-as="o">
+          <t t-call="web.external_layout">
+              <div class="page">
+                <div class="float-right"><span t-field="o.date"/></div>
+                <div class="col-6">
+                  <table class="table table-sm">
+                    <tr>
+                      <td>N° Affiliation C.N.S.S</td>
+                      <td><span t-field="o.employee_id.company_id.affil_cnss"/></td>
+                    </tr>
+                  </table>
+                  <table class="table table-sm">
+                    <tr>
+                      <td>Du</td>
+                      <td><span t-field="o.date_from"/></td>
+                      <td>Au</td>
+                      <td><span t-field="o.date_to"/></td>
+                    </tr>
+                  </table>
+                </div>
+                <h2 style="text-transform: uppercase; text-align: center;">BULLETIN DE PAIE</h2>
+                <div class="ml-auto">
+                  <table class="table table-sm table-bordered">
+                      <tr>
+                          <td><strong>MAT</strong></td>
+                          <td><strong>Nom et Prénom</strong></td>
+                          <td><strong>Fonction</strong></td>
+                          <td><strong>Département</strong></td>
+                      </tr>
+                      <tr>
+                        <td><span t-field="o.employee_id.num_chezemployeur"/></td>
+                        <td><span t-field="o.employee_id"/></td>
+                        <td><span t-field="o.employee_id.job_id"/></td>
+                        <td><span t-field="o.employee_id.department_id"/></td>
+                      </tr>
+                  </table>
+                  <table class="table table-sm table-bordered">
+                      <tr>
+                        <td><strong>Date Embauche</strong></td>
+                        <td><strong>NAT</strong></td>
+                        <td><strong>SF</strong></td>
+                        <td><strong>Nb Déduc</strong></td>
+                        <td colspan = "4"><strong>N°C.N.S.S</strong></td>
+                        <td colspan = "4"><strong>N°Retraite</strong></td>
+                      </tr>
+                      <tr>
+                        <td><span t-field="o.employee_id.service_start_date"/></td>
+                        <td><span t-field="o.employee_id.country_id"/></td>
+                        <td><span t-field="o.employee_id.marital"/></td>
+                        <td><span t-field="o.employee_id.charge_sociale"/></td>
+                        <td colspan = "4"><span t-field="o.employee_id.matricule_cnss"/></td>
+                        <td colspan = "4"><span t-field="o.employee_id.matricule_cimr"/></td>
+                      </tr>
+                  </table>
+                  <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Désignation</th>
+                                <th>Quantité / Base</th>
+                                <th>Taux</th>
+                                <th>Montant</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="get_payslip_lines(o.line_ids)" t-as="p">
+                                <td>
+                                     <span t-esc="p.name or ''"/>
+                                </td>
+                                <td>
+                                    <t t-if="p.amount_select== 'percentage'">
+                                        <span t-esc="p.amount or ''"/>
+                                    </t>
+                                    <t t-if="p.amount_select== 'fix'">
+                                        <span t-esc="p.quantity or ''"/>
+                                    </t>
+                                </td>
+                                <td>
+                                    <t t-if="p.amount_select == 'percentage'">
+                                        <span t-esc="p.rate or ''"/>
+                                    </t>
+                                </td>
+                                <td>
+                                    <span t-esc="p.total or ''"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                  <div class="col-4">
+                    <p><strong>N° Compte Bancaire</strong><br/>
+                    <span t-field="o.employee_id.bank_account_id"/></p>
+                  </div>
+                  <div class="col-8">
+                    <table class="table table-sm table-bordered">
+                      <tr>
+                        <td style="width:150px;"></td>
+                        <td  style="width:150px;"></td>
+                        <td><strong>GAINS</strong></td>
+                        <td><strong>RETENUES</strong></td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td><span t-esc="get_total_by_rule_category(o, 'GROSS')"/></td>
+                        <td><span t-esc="get_total_by_rule_category(o, 'RETENUES')"/></td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <table class="table table-sm table-bordered">
+                  <tr>
+                    <td><strong>CUMUL S.BASE</strong></td>
+                    <td><strong>CUMUL JOURS</strong></td>
+                    <td><strong>Droit au CP</strong></td>
+                    <td><strong>Solde precédent CP</strong></td>
+                  </tr>
+                  <tr>
+                    <td><span t-esc="get_total_by_rule_category(o, 'CSBRUT')"/></td>
+                    <td><span t-esc="get_total_by_rule_category(o, 'CJRTV')"/></td>
+                    <td><span t-esc="o.employee_id.leaves_count"/></td>
+                    <td>0</td>
+                  </tr>
+                  <tr>
+                    <td><strong>CUMUL ASS</strong></td>
+                    <td><strong>CUMUL RET</strong></td>
+                    <td><strong>CUMUL CNSS</strong></td>
+                    <td><strong>CUMUL IGR</strong></td>
+                    <td><strong>NET A PAYER</strong></td>
+                  </tr>
+                  <tr>
+                    <td><span t-esc="get_total_by_rule_category(o, 'CASS')"/></td>
+                    <td><span t-esc="get_total_by_rule_category(o, 'CRET')"/></td>
+                    <td><span t-esc="get_total_by_rule_category(o, 'CCNSS')"/></td>
+                    <td><span t-esc="get_total_by_rule_category(o, 'CIGR')"/></td>
+                    <td><span t-esc="get_total_by_rule_category(o, 'NETA') or get_total_by_rule_category(o, 'NET')"/></td>
+                  </tr>
+                </table>
+                <div class="row">
+                  <div class="col-12">
+                  <p>J'ai bien reçu la somme indiquée sur mon bulletin</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6"></div>
+                  <div class="col-6"><p><strong>SIGNATURE</strong></p></div>
+                </div>
+              </div>
+          </t>
+      </t>
+  </t>
+  </template>
+</odoo>
