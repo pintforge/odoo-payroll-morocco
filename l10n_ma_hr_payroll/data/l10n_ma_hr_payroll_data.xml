@@ -594,7 +594,7 @@ result = FRPRO if (FRPRO &lt;=2500) else min((((2500*coef)-FP)+2500), FRPRO) if 
        <field name="name">Arrondi Courant</field>
        <field name="code">AC</field>
        <field name="sequence">1001</field>
-       <field name="category_id" ref="BASIC"/>
+       <field name="category_id" ref="hr_payroll.BASIC"/>
        <field name="amount_select">code</field>
        <field name="amount_python_compute">result = round(GROSS - categories.DED - categories.RETENUES - categories.IR) - (GROSS - categories.DED - categories.RETENUES - categories.IR)</field>
        <field name="appears_on_payslip" eval="True"/>
@@ -604,7 +604,7 @@ result = FRPRO if (FRPRO &lt;=2500) else min((((2500*coef)-FP)+2500), FRPRO) if 
        <field name="name">Arrondi Precédent</field>
        <field name="code">AP</field>
        <field name="sequence">1003</field>
-       <field name="category_id" ref="RETENUES"/>
+       <field name="category_id" ref="hr_payroll.DED"/>
        <field name="amount_select">code</field>
        <field name="amount_python_compute">result = payslip.sum('AC', '2019-01-01', '2019-12-31')+AC</field>
        <field name="appears_on_payslip" eval="True"/>
@@ -744,14 +744,6 @@ result = FRPRO if (FRPRO &lt;=2500) else min((((2500*coef)-FP)+2500), FRPRO) if 
         <field eval="[(6, 0, [ref('hr_payslip_rule_abs'),ref('hr_payslip_rule_absh'),ref('hr_payslip_rule_jrtv'),ref('hr_payslip_rule_tjrtv'), ref('hr_payslip_rule_regul'),ref('hr_payslip_rule_rap_base'), ref('hr_payslip_rule_grat13'), ref('hr_payslip_rule_grat6'), ref('hr_payslip_rule_grat13bis'), ref('hr_payslip_rule_grat6bis'),ref('hr_payslip_rule_gratdiv'),ref('hr_payslip_rule_inv'),ref('hr_payslip_rule_bilan'),ref('hr_payslip_rule_primfonc'),ref('hr_payslip_rule_pranc'),ref('hr_payslip_rule_indtrans'),ref('hr_payslip_rule_indvt'),ref('hr_payslip_rule_indrepr'),ref('hr_payslip_rule_primpan'),ref('hr_payslip_rule_avantage_nature'),ref('hr_payslip_rule_sbi'),ref('hr_payslip_rule_plcnss'),ref('hr_payslip_rule_cnsse'),ref('hr_payslip_rule_cimre'),ref('hr_payslip_rule_assmal'),ref('hr_payslip_rule_totded'),ref('hr_payslip_rule_frpro'),ref('hr_payslip_rule_tfrpro'),ref('hr_payslip_rule_sni'),ref('hr_payslip_rule_baseir'),ref('hr_payslip_rule_trimp'),ref('hr_payslip_rule_sad'),ref('hr_payslip_rule_irant'),ref('hr_payslip_rule_cfam'),ref('hr_payslip_rule_tcfam'),ref('hr_payslip_rule_irbrut'),ref('hr_payslip_rule_ir'),ref('hr_payslip_rule_tppa'),ref('hr_payslip_rule_net'),ref('hr_payslip_rule_abn'),ref('hr_payslip_rule_ppmal'),ref('hr_payslip_rule_ppai'),ref('hr_payslip_rule_ppad'),ref('hr_payslip_rule_ppat'),ref('hr_payslip_rule_ppcimr'),ref('hr_payslip_rule_ppaf'),ref('hr_payslip_rule_ppps'),ref('hr_payslip_rule_ppfp'),ref('hr_payslip_rule_total'),])]" name="rule_ids"/>=
         <field name="company_id" ref="base.main_company"/>
         <field name="note">Cette rubrique représente la structure des employés marocains.</field>
-    </record>
-	
-    <record id="hr_payroll_salary_structure_basear" model="hr.payroll.structure">
-        <field name="code">Ma-Base-AR</field>
-        <field name="name">Structure de base paie Marocaine Arrondi</field>
-        <field eval="[(6, 0, [ref('hr_payslip_rule_abs'),ref('hr_payslip_rule_absh'),ref('hr_payslip_rule_jrtv'),ref('hr_payslip_rule_tjrtv'), ref('hr_payslip_rule_regul'),ref('hr_payslip_rule_rap_base'), ref('hr_payslip_rule_grat13'), ref('hr_payslip_rule_grat6'), ref('hr_payslip_rule_grat13bis'), ref('hr_payslip_rule_grat6bis'),ref('hr_payslip_rule_gratdiv'),ref('hr_payslip_rule_inv'),ref('hr_payslip_rule_bilan'),ref('hr_payslip_rule_primfonc'),ref('hr_payslip_rule_pranc'),ref('hr_payslip_rule_indtrans'),ref('hr_payslip_rule_indvt'),ref('hr_payslip_rule_indrepr'),ref('hr_payslip_rule_primpan'),ref('hr_payslip_rule_avantage_nature'),ref('hr_payslip_rule_sbi'),ref('hr_payslip_rule_plcnss'),ref('hr_payslip_rule_cnsse'),ref('hr_payslip_rule_cimre'),ref('hr_payslip_rule_assmal'),ref('hr_payslip_rule_totded'),ref('hr_payslip_rule_frpro'),ref('hr_payslip_rule_tfrpro'),ref('hr_payslip_rule_sni'),ref('hr_payslip_rule_baseir'),ref('hr_payslip_rule_trimp'),ref('hr_payslip_rule_sad'),ref('hr_payslip_rule_irant'),ref('hr_payslip_rule_cfam'),ref('hr_payslip_rule_tcfam'),ref('hr_payslip_rule_irbrut'),ref('hr_payslip_rule_ir'),ref('hr_payslip_rule_tppa'),ref('hr_payslip_rule_netar'),ref('hr_payslip_rule_netac'),ref('hr_payslip_rule_netap'),ref('hr_payslip_rule_abn'),ref('hr_payslip_rule_ppmal'),ref('hr_payslip_rule_ppai'),ref('hr_payslip_rule_ppad'),ref('hr_payslip_rule_ppat'),ref('hr_payslip_rule_ppcimr'),ref('hr_payslip_rule_ppaf'),ref('hr_payslip_rule_ppps'),ref('hr_payslip_rule_ppfp'),ref('hr_payslip_rule_total'),])]" name="rule_ids"/>
-        <field name="company_id" ref="base.main_company"/>
-        <field name="note">Cette rubrique représente la structure des employés marocains avec un Net Arrondi.</field>
     </record>
 	
 <!-- Rule Inputs -->
