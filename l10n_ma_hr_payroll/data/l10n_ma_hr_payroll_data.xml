@@ -619,9 +619,7 @@ result = FRPRO if (FRPRO &lt;=2500) else min((((2500*coef)-FP)+2500), FRPRO) if 
        <field name="amount_python_compute">result = inputs.ABN and inputs.ABN.amount </field>
        <field name="appears_on_payslip" eval="True"/>
      </record>
-	
 
-     
  <!--HR structure -->
 
     <record id="hr_payroll_salary_structure_base" model="hr.payroll.structure">
