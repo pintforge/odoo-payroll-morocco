@@ -620,128 +620,14 @@ result = FRPRO if (FRPRO &lt;=2500) else min((((2500*coef)-FP)+2500), FRPRO) if 
        <field name="appears_on_payslip" eval="True"/>
      </record>
 	
-     <record id="hr_payslip_rule_ppmal" model="hr.salary.rule">
-       <field name="name">PP Maladie</field>
-       <field name="code">PPMAL</field>
-       <field name="sequence">1130</field>
-       <field name="category_id" ref="hr_payroll.COMP"/>
-       <field name="amount_select">percentage</field>
-       <field name="amount_percentage_base">SBI</field>
-       <field name="quantity">1</field>
-       <field name="amount_percentage">8.8350</field>
-       <field name="appears_on_payslip" eval="False"/>
-       <field name="register_id" ref="hr_prevoyance_register"/>
-     </record>
 
-     <record id="hr_payslip_rule_ppai" model="hr.salary.rule">
-       <field name="name">PP Assurance Invalidité</field>
-       <field name="code">PPAI</field>
-       <field name="sequence">1140</field>
-       <field name="category_id" ref="hr_payroll.COMP"/>
-       <field name="amount_select">percentage</field>
-       <field name="amount_percentage_base">SBI</field>
-       <field name="quantity">1</field>
-       <field name="amount_percentage">0.6840</field>
-       <field name="appears_on_payslip" eval="False"/>
-       <field name="register_id" ref="hr_prevoyance_register"/>
-     </record>
-
-     <record id="hr_payslip_rule_ppad" model="hr.salary.rule">
-       <field name="name">PP Assurance Décés</field>
-       <field name="code">PPAD</field>
-       <field name="sequence">1150</field>
-       <field name="category_id" ref="hr_payroll.COMP"/>
-       <field name="amount_select">percentage</field>
-       <field name="amount_percentage_base">SBI</field>
-       <field name="quantity">1</field>
-       <field name="amount_percentage">0.6000</field>
-       <field name="appears_on_payslip" eval="False"/>
-       <field name="register_id" ref="hr_prevoyance_register"/>
-     </record>
-
-     <record id="hr_payslip_rule_ppat" model="hr.salary.rule">
-       <field name="name">PP Accident de Travail</field>
-       <field name="code">PPAT</field>
-       <field name="sequence">1160</field>
-       <field name="category_id" ref="hr_payroll.COMP"/>
-       <field name="amount_select">percentage</field>
-       <field name="amount_percentage_base">SBI</field>
-       <field name="quantity">1</field>
-       <field name="amount_percentage">1.9800</field>
-       <field name="appears_on_payslip" eval="False"/>
-       <field name="register_id" ref="hr_prevoyance_register"/>
-     </record>
-
-     <record id="hr_payslip_rule_ppcimr" model="hr.salary.rule">
-       <field name="name">PP CIMR</field>
-       <field name="code">PPCIMR</field>
-       <field name="sequence">1170</field>
-       <field name="category_id" ref="hr_payroll.COMP"/>
-       <field name="condition_select">python</field>
-       <field name="condition_python">result = employee.matricule_cimr</field>
-       <field name="amount_select">percentage</field>
-       <field name="amount_percentage_base">SBI</field>
-       <field name="quantity">1</field>
-       <field name="amount_percentage">7.80</field>
-       <field name="appears_on_payslip" eval="False"/>
-       <field name="register_id" ref="hr_retraite_register"/>
-     </record>
-
-     <record id="hr_payslip_rule_ppaf" model="hr.salary.rule">
-       <field name="name">PP CNSS 8,25% ALLOC FAM</field>
-       <field name="code">PPAF</field>
-       <field name="sequence">1180</field>
-       <field name="category_id" ref="hr_payroll.COMP"/>
-       <field name="amount_select">percentage</field>
-       <field name="amount_percentage_base">SBI</field>
-       <field name="quantity">1</field>
-       <field name="amount_percentage">8.25</field>
-       <field name="appears_on_payslip" eval="False"/>
-       <field name="register_id" ref="hr_CNSS_register"/>
-     </record>
-
-     <record id="hr_payslip_rule_ppps" model="hr.salary.rule">
-       <field name="name">PP+PS CNSS 13,46% PREST SAL</field>
-       <field name="code">PPPS</field>
-       <field name="sequence">1190</field>
-       <field name="category_id" ref="hr_payroll.COMP"/>
-       <field name="amount_select">percentage</field>
-       <field name="amount_percentage_base">min(SBI, 6000)</field>
-       <field name="quantity">1</field>
-       <field name="amount_percentage">13.46</field>
-       <field name="appears_on_payslip" eval="False"/>
-       <field name="register_id" ref="hr_CNSS_register"/>
-     </record>
-
-     <record id="hr_payslip_rule_ppfp" model="hr.salary.rule">
-       <field name="name">PP CNSS 1.60% FOR PROF</field>
-       <field name="code">PPFP</field>
-       <field name="sequence">1200</field>
-       <field name="category_id" ref="hr_payroll.COMP"/>
-       <field name="amount_select">percentage</field>
-       <field name="amount_percentage_base">SBI</field>
-       <field name="quantity">1</field>
-       <field name="amount_percentage">1.60</field>
-       <field name="appears_on_payslip" eval="False"/>
-       <field name="register_id" ref="hr_CNSS_register"/>
-     </record>
-
-     <record id="hr_payslip_rule_total" model="hr.salary.rule">
-       <field name="name">Total Versé par l'Employeur</field>
-       <field name="code">TOTAL</field>
-       <field name="sequence">2000</field>
-       <field name="category_id" ref="TOTAL"/>
-       <field name="amount_select">code</field>
-       <field name="amount_python_compute">result = categories.BASIC + categories.COMP</field>
-       <field name="appears_on_payslip" eval="False"/>
-     </record>
      
  <!--HR structure -->
 
     <record id="hr_payroll_salary_structure_base" model="hr.payroll.structure">
         <field name="code">Ma-Base-</field>
         <field name="name">Structure de base paie Marocaine</field>
-        <field eval="[(6, 0, [ref('hr_payslip_rule_abs'),ref('hr_payslip_rule_absh'),ref('hr_payslip_rule_jrtv'),ref('hr_payslip_rule_tjrtv'), ref('hr_payslip_rule_regul'),ref('hr_payslip_rule_rap_base'), ref('hr_payslip_rule_grat13'), ref('hr_payslip_rule_grat6'), ref('hr_payslip_rule_grat13bis'), ref('hr_payslip_rule_grat6bis'),ref('hr_payslip_rule_gratdiv'),ref('hr_payslip_rule_inv'),ref('hr_payslip_rule_bilan'),ref('hr_payslip_rule_primfonc'),ref('hr_payslip_rule_pranc'),ref('hr_payslip_rule_indtrans'),ref('hr_payslip_rule_indvt'),ref('hr_payslip_rule_indrepr'),ref('hr_payslip_rule_primpan'),ref('hr_payslip_rule_avantage_nature'),ref('hr_payslip_rule_sbi'),ref('hr_payslip_rule_plcnss'),ref('hr_payslip_rule_cnsse'),ref('hr_payslip_rule_cimre'),ref('hr_payslip_rule_assmal'),ref('hr_payslip_rule_totded'),ref('hr_payslip_rule_frpro'),ref('hr_payslip_rule_tfrpro'),ref('hr_payslip_rule_sni'),ref('hr_payslip_rule_baseir'),ref('hr_payslip_rule_trimp'),ref('hr_payslip_rule_sad'),ref('hr_payslip_rule_irant'),ref('hr_payslip_rule_cfam'),ref('hr_payslip_rule_tcfam'),ref('hr_payslip_rule_irbrut'),ref('hr_payslip_rule_ir'),ref('hr_payslip_rule_tppa'),ref('hr_payslip_rule_net'),ref('hr_payslip_rule_abn'),ref('hr_payslip_rule_ppmal'),ref('hr_payslip_rule_ppai'),ref('hr_payslip_rule_ppad'),ref('hr_payslip_rule_ppat'),ref('hr_payslip_rule_ppcimr'),ref('hr_payslip_rule_ppaf'),ref('hr_payslip_rule_ppps'),ref('hr_payslip_rule_ppfp'),ref('hr_payslip_rule_total'),])]" name="rule_ids"/>=
+        <field eval="[(6, 0, [ref('hr_payslip_rule_abs'),ref('hr_payslip_rule_absh'),ref('hr_payslip_rule_jrtv'),ref('hr_payslip_rule_tjrtv'), ref('hr_payslip_rule_regul'),ref('hr_payslip_rule_rap_base'), ref('hr_payslip_rule_grat13'), ref('hr_payslip_rule_grat6'), ref('hr_payslip_rule_grat13bis'), ref('hr_payslip_rule_grat6bis'),ref('hr_payslip_rule_gratdiv'),ref('hr_payslip_rule_inv'),ref('hr_payslip_rule_bilan'),ref('hr_payslip_rule_primfonc'),ref('hr_payslip_rule_pranc'),ref('hr_payslip_rule_indtrans'),ref('hr_payslip_rule_indvt'),ref('hr_payslip_rule_indrepr'),ref('hr_payslip_rule_primpan'),ref('hr_payslip_rule_avantage_nature'),ref('hr_payslip_rule_sbi'),ref('hr_payslip_rule_plcnss'),ref('hr_payslip_rule_cnsse'),ref('hr_payslip_rule_cimre'),ref('hr_payslip_rule_assmal'),ref('hr_payslip_rule_totded'),ref('hr_payslip_rule_frpro'),ref('hr_payslip_rule_tfrpro'),ref('hr_payslip_rule_sni'),ref('hr_payslip_rule_baseir'),ref('hr_payslip_rule_trimp'),ref('hr_payslip_rule_sad'),ref('hr_payslip_rule_irant'),ref('hr_payslip_rule_cfam'),ref('hr_payslip_rule_tcfam'),ref('hr_payslip_rule_irbrut'),ref('hr_payslip_rule_ir'),ref('hr_payslip_rule_tppa'),ref('hr_payslip_rule_net'),ref('hr_payslip_rule_abn'),])]" name="rule_ids"/>=
         <field name="company_id" ref="base.main_company"/>
         <field name="note">Cette rubrique représente la structure des employés marocains.</field>
     </record>
