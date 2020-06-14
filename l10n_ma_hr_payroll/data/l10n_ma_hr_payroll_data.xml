@@ -78,7 +78,7 @@
     </record>
 	
     <record id="PRIMANC" model="hr.salary.rule.category">
-        <field name="name">Prime d'\ancienneté</field>
+        <field name="name">Prime d'ancienneté</field>
         <field name="code">PRIMANC</field>
         <field name="parent_id" ref="hr_payroll.ALW"/>
     </record>
@@ -288,7 +288,7 @@ result = contract.wage*(coef/12) if (contract.date_start.year == payslip.date_fr
 result = coef > 24</field>
        <field name="amount_select">code</field>
        <field name="amount_python_compute">coef = ((payslip.date_from.year - contract.date_start.year)*12) - contract.date_start.month + (payslip.date_from.month + 1)
-BC = categories.BASIC + categories.ALW 
+BC = categories.BASE + categories.ALW 
 result = (BC*5/100) if (coef &gt;= 25) and (coef &lt;= 60) else (BC*10/100) if (coef &gt;= 61) and (coef &lt;= 144) else (BC*15/100) if (coef &gt;= 145) and (coef &lt;= 240) else (BC*20/100) if (coef &gt;= 241) and (coef &lt;= 300) else (BC*25/100)</field>
        <field name="appears_on_payslip" eval="True"/>
        <field name="register_id" ref="hr_prime__register"/>
