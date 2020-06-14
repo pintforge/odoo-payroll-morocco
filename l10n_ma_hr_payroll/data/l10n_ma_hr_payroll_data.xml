@@ -568,13 +568,13 @@ result = FRPRO if (FRPRO &lt;=2500) else min((((2500*coef)-FP)+2500), FRPRO) if 
        <field name="appears_on_payslip" eval="True"/>
      </record>
 
-     <record id="hr_payslip_rule_net" model="hr.salary.rule">
+     <record id="hr_payroll.hr_rule_net" model="hr.salary.rule">
        <field name="name">Net à Payer</field>
        <field name="code">NET</field>
        <field name="sequence">1000</field>
        <field name="category_id" ref="hr_payroll.NET"/>
        <field name="amount_select">code</field>
-       <field name="amount_python_compute">result = GROSS - categories.DED - categories.RETENUES - categories.IR</field>
+       <field name="amount_python_compute">result = GROSS - categories.DED</field>
        <field name="appears_on_payslip" eval="True"/>
      </record>
      
