@@ -249,7 +249,7 @@ result = contract.wage*(coef/12) if (contract.date_start.year == payslip.date_fr
        <field name="amount_select">code</field>
        <field name="amount_python_compute">result = inputs.INV and inputs.INV.amount</field>
        <field name="appears_on_payslip" eval="True"/>
-
+       <field name="register_id" ref="hr_prime__register"/>
     </record>
 
     <record id="hr_payslip_rule_bilan" model="hr.salary.rule">
@@ -262,7 +262,7 @@ result = contract.wage*(coef/12) if (contract.date_start.year == payslip.date_fr
        <field name="amount_select">code</field>
        <field name="amount_python_compute">result = inputs.BILAN and inputs.BILAN.amount</field>
        <field name="appears_on_payslip" eval="True"/>
-
+       <field name="register_id" ref="hr_prime__register"/>
      </record>
 
      <record id="hr_payslip_rule_primfonc" model="hr.salary.rule">
